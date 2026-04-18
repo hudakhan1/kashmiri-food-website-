@@ -1,0 +1,419 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+    .menu-section {
+        padding: 2rem 1rem;
+        background: #F8F4E9;
+    }
+
+    .menu-title {
+        font-family: 'Playfair Display', serif;
+        font-size: 3.2rem;
+        font-weight: 700;
+        text-align: center;
+        color: #9D2C2B;
+        margin-bottom: 1rem;
+        opacity: 0;
+        transform: translateY(30px);
+        animation: fadeInUp 1s forwards;
+        animation-delay: 0.3s;
+    }
+
+    .menu-subtitle {
+        text-align: center;
+        color: #2C1810;
+        margin-bottom: 3rem;
+        opacity: 0;
+        transform: translateY(30px);
+        animation: fadeInUp 1s forwards;
+        animation-delay: 0.6s;
+    }
+
+    .category-title {
+        font-family: 'Playfair Display', serif;
+        font-size: 2.2rem;
+        font-weight: 600;
+        text-align: center;
+        color: #9D2C2B;
+        margin: 3rem 0 2rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid #D96C2B;
+        position: relative;
+    }
+
+    .category-title::before {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60px;
+        height: 2px;
+        background: #9D2C2B;
+    }
+
+    .menu-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    .menu-card {
+        background: white;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+        transition: all 0.4s ease;
+        opacity: 0;
+        transform: translateY(30px);
+        animation: fadeInUp 1s forwards;
+    }
+
+    .menu-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+    }
+
+    .menu-image {
+        width: 100%;
+        height: 220px;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+
+    .menu-card:hover .menu-image {
+        transform: scale(1.05);
+    }
+
+    .menu-content {
+        padding: 1.5rem;
+    }
+
+    .menu-item-title {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.4rem;
+        font-weight: 600;
+        color: #2C1810;
+        margin-bottom: 0.5rem;
+    }
+
+    .menu-item-price {
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: #D96C2B;
+        margin-bottom: 1rem;
+    }
+
+    .add-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #9D2C2B, #D96C2B);
+        color: white;
+        padding: 0.6rem 1.2rem;
+        border-radius: 50px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(157, 44, 43, 0.25);
+    }
+
+    .add-button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(157, 44, 43, 0.35);
+        color: white;
+    }
+
+    .toggle-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #9D2C2B, #D96C2B);
+        color: white;
+        padding: 0.8rem 1.8rem;
+        border-radius: 50px;
+        font-weight: 600;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(157, 44, 43, 0.25);
+        margin: 1rem auto 3rem;
+    }
+
+    .toggle-button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(157, 44, 43, 0.35);
+    }
+
+    .extra-card {
+        opacity: 0;
+        transform: translateY(30px);
+        animation: fadeInUp 1s forwards;
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .menu-icon {
+        margin-right: 0.5rem;
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 768px) {
+        .menu-title {
+            font-size: 2.5rem;
+        }
+
+        .category-title {
+            font-size: 1.8rem;
+        }
+
+        .menu-grid {
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .menu-title {
+            font-size: 2rem;
+        }
+
+        .category-title {
+            font-size: 1.6rem;
+        }
+
+        .menu-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+
+<section class="menu-section">
+    <div class="container mx-auto">
+        <h1 class="menu-title">Our Kashmiri Menu</h1>
+        <p class="menu-subtitle">Discover the authentic flavors of Kashmir with our traditional dishes</p>
+
+<!--        search -->
+        <div class="search-container">
+    <input type="text" id="menuSearch" placeholder="Search by category or dish..." onkeyup="searchMenu()" />
+    <i class="fas fa-search search-icon"></i>
+    <ul id="searchSuggestions" class="suggestions"></ul>
+</div>
+
+<style>
+.search-container {
+    position: relative;
+    max-width: 600px;
+    margin: 0 auto 2rem;
+}
+#menuSearch {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border: 2px solid #D96C2B;
+    border-radius: 50px;
+    font-size: 1rem;
+    outline: none;
+}
+.search-icon {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #9D2C2B;
+}
+.suggestions {
+    position: absolute;
+    top: 110%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    max-height: 200px;
+    overflow-y: auto;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    z-index: 1000;
+}
+.suggestions li {
+    padding: 10px 15px;
+    cursor: pointer;
+}
+.suggestions li:hover {
+    background: #f2f2f2;
+}
+.no-result {
+    color: #999;
+    text-align: center;
+}
+.highlight {
+    outline: 3px solid #D96C2B;
+    border-radius: 10px;
+    transition: outline 0.3s ease;
+}
+</style>
+
+
+<!--        JS Logic for Search + Suggestion-->
+
+        <script>
+const allItems = {{ all_items|tojson }};
+const searchInput = document.getElementById("menuSearch");
+const suggestionsBox = document.getElementById("searchSuggestions");
+
+function searchMenu() {
+    const query = searchInput.value.toLowerCase();
+    suggestionsBox.innerHTML = "";
+
+    if (!query) return;
+
+    const matches = allItems.filter(item =>
+        item.title.toLowerCase().includes(query) ||
+        item.category.toLowerCase().includes(query)
+    );
+
+    if (matches.length === 0) {
+        suggestionsBox.innerHTML = `<li class="no-result">No results</li>`;
+        return;
+    }
+
+    matches.forEach(match => {
+        const li = document.createElement("li");
+        li.textContent = `${match.title} (${match.category})`;
+        li.onclick = () => {
+            scrollToItem(match);
+            suggestionsBox.innerHTML = "";
+            searchInput.value = "";
+        };
+        suggestionsBox.appendChild(li);
+    });
+}
+
+function scrollToItem(match) {
+    // Scroll to category section
+    const categorySection = [...document.querySelectorAll(".category-title")]
+        .find(el => el.textContent.trim() === match.category);
+
+    if (categorySection) {
+        categorySection.scrollIntoView({ behavior: "smooth" });
+    }
+
+    // Highlight dish card
+    const card = [...document.querySelectorAll(".menu-card")]
+        .find(el => el.querySelector(".menu-item-title")?.innerText.trim() === match.title);
+
+    if (card) {
+        card.classList.add("highlight");
+        setTimeout(() => card.classList.remove("highlight"), 2000);
+    }
+}
+</script>
+
+
+<h1 class="menu-title text-center mb-4" style="opacity: 0; transform: translateY(30px); animation: fadeInUp 1s forwards; animation-delay: 0.3s;">
+    <i class="fas fa-star menu-icon" style="color: #D96C2B; animation: pulse 2s infinite;"></i> Featured Food
+</h1>
+
+<style>
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.2); }
+        100% { transform: scale(1); }
+    }
+</style>
+
+{% for category, items in featured_menus.items() %}
+  <h2 class="category-title">
+    <i class="fas fa-crown menu-icon" style="color: gold;"></i>{{ category }}
+  </h2>
+  <div class="menu-grid">
+    {% for item in items %}
+      <div class="menu-card" style="animation-delay: {{ loop.index * 0.1 }}s;">
+        <img src="{{ item.image }}" alt="{{ item.title }}" class="menu-image">
+        <div class="menu-content">
+          <h3 class="menu-item-title">{{ item.title }}</h3>
+          <p class="menu-item-price">
+            <i class="fas fa-tag menu-icon"></i> Price: {{ item.price }}
+          </p>
+          <a href="{{ url_for('menu_view', menu_id=item.id) }}" class="add-button">
+            <i class="fas fa-plus menu-icon"></i>
+          </a>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% endfor %}
+        {% for category, items in menus.items() %}
+        <div id="category-{{ loop.index }}">
+            <h2 class="category-title">
+                <i class="fas fa-utensils menu-icon"></i>{{ category }}
+            </h2>
+
+            <div class="menu-grid">
+                {% for item in items %}
+                <div class="menu-card {% if loop.index > 3 %}hidden extra-card{% endif %}"
+                     style="animation-delay: {{ loop.index * 0.1 }}s;">
+                    <img src="{{ item.image }}" alt="{{ item.title }}" class="menu-image">
+                    <div class="menu-content">
+                        <h3 class="menu-item-title">{{ item.title }}</h3>
+                        <p class="menu-item-price">
+                            <i class="fas fa-tag menu-icon"></i>Price: {{ item.price }}
+                        </p>
+                        <a href="{{ url_for('menu_view', menu_id=item.id) }}" class="add-button">
+                            <i class="fas fa-plus menu-icon"></i>
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            {% if items|length > 3 %}
+            <div class="text-center">
+                <button onclick="toggleCategory('category-{{ loop.index }}')"
+                        class="toggle-button">
+                    <i class="fas fa-chevron-down menu-icon"></i>
+                    <span class="toggle-btn-text">Show More</span>
+                </button>
+            </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<script>
+    function toggleCategory(categoryId) {
+        const hiddenCards = document.querySelectorAll(`#${categoryId} .extra-card`);
+        const button = document.querySelector(`#${categoryId} .toggle-button`);
+        const buttonText = document.querySelector(`#${categoryId} .toggle-btn-text`);
+        const buttonIcon = document.querySelector(`#${categoryId} .fa-chevron-down`);
+
+        hiddenCards.forEach(card => {
+            card.classList.toggle("hidden");
+        });
+
+        if (buttonText.innerText === "Show More") {
+            buttonText.innerText = "Show Less";
+            buttonIcon.classList.replace("fa-chevron-down", "fa-chevron-up");
+        } else {
+            buttonText.innerText = "Show More";
+            buttonIcon.classList.replace("fa-chevron-up", "fa-chevron-down");
+        }
+    }
+</script>
+
+{% endblock %}

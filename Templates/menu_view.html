@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Kashmiri Food - {{ item.title }}</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap');
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #F8F4E9 0%, #F0E6D6 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .menu-card {
+      max-width: 450px;
+      width: 100%;
+      background: white;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+      transform: scale(0.95);
+      opacity: 0;
+      animation: cardEntrance 0.8s ease-out forwards;
+    }
+
+    .menu-image {
+      width: 100%;
+      height: 280px;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .menu-card:hover .menu-image {
+      transform: scale(1.05);
+    }
+
+    .menu-content {
+      padding: 2rem;
+    }
+
+    .menu-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: #9D2C2B;
+      margin-bottom: 0.5rem;
+      position: relative;
+    }
+
+    .menu-title::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 60px;
+      height: 3px;
+      background: linear-gradient(90deg, #9D2C2B, #D96C2B);
+    }
+
+    .menu-category {
+      font-size: 1.1rem;
+      color: #2C1810;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+    }
+
+    .menu-price {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #D96C2B;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+    }
+
+    .quantity-controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 2rem;
+      gap: 1rem;
+    }
+
+    .quantity-btn {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      border: none;
+      background: linear-gradient(135deg, #9D2C2B, #D96C2B);
+      color: white;
+      font-size: 1.2rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(157, 44, 43, 0.3);
+    }
+
+    .quantity-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 6px 18px rgba(157, 44, 43, 0.4);
+    }
+
+    .quantity-display {
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: #2C1810;
+      min-width: 50px;
+      text-align: center;
+      padding: 0.5rem;
+      background: rgba(157, 44, 43, 0.1);
+      border-radius: 10px;
+    }
+
+    .add-to-cart-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      background: linear-gradient(135deg, #9D2C2B, #D96C2B);
+      color: white;
+      padding: 1rem 2rem;
+      border-radius: 50px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.4s ease;
+      box-shadow: 0 5px 15px rgba(157, 44, 43, 0.25);
+      border: none;
+      cursor: pointer;
+      font-size: 1.1rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .add-to-cart-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: 0.5s;
+    }
+
+    .add-to-cart-btn:hover::before {
+      left: 100%;
+    }
+
+    .add-to-cart-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(157, 44, 43, 0.35);
+    }
+
+    .btn-icon {
+      margin-right: 0.8rem;
+    }
+
+    /* Animations */
+    @keyframes cardEntrance {
+      0% {
+        transform: scale(0.95);
+        opacity: 0;
+      }
+      70% {
+        transform: scale(1.02);
+      }
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.05);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    .pulse {
+      animation: pulse 2s infinite;
+    }
+
+    /* Decorative elements */
+    .food-pattern {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 极 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%239D2C2B' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: -1;
+    }
+  </style>
+</head>
+<body>
+  <!-- Decorative background pattern -->
+  <div class="food-pattern"></div>
+
+  <div class="menu-card">
+    <!-- Food Image -->
+    <img src="/{{ item.image }}" alt="{{ item.title }}" class="menu-image">
+
+    <div class="menu-content">
+      <!-- Title -->
+      <h2 class="menu-title">{{ item.title }}</h2>
+
+      <p class="menu-category">
+        <i class="fas fa-tag text-kashmir-saffron mr-2"></i>
+        Category: {{ item.category }}
+      </p>
+
+      <p class="menu-price">
+        <i class="fas fa-tag mr-2"></i>
+        Price: {{ item.price }}
+      </p>
+
+      <!-- Add to Cart Form -->
+      <form method="POST" action="{{ url_for('add_to_cart', menu_id=item.id) }}">
+        <div class="quantity-controls">
+          <!-- Decrease -->
+          <button type="button" onclick="decreaseQuantity()" class="quantity-btn">
+            <i class="fas fa-minus"></i>
+          </button>
+
+          <!-- Quantity Display -->
+          <span id="quantity" class="quantity-display">1</span>
+          <input type="hidden" name="quantity" id="quantity-input" value="1">
+
+          <!-- Increase -->
+          <button type="button" onclick="increaseQuantity()" class="quantity-btn">
+            <i class="fas fa-plus"></i>
+          </button>
+        </div>
+
+        <!-- Add to Cart Button -->
+        <button type="submit" class="add-to-cart-btn pulse">
+          <i class="fas fa-shopping-cart btn-icon"></i>
+          Add to Cart
+        </button>
+      </form>
+    </div>
+  </div>
+
+
+  <script>
+    let quantity = 1;
+
+    function updateQuantity() {
+      document.getElementById('quantity').textContent = quantity;
+      document.getElementById('quantity-input').value = quantity;
+    }
+
+    function increaseQuantity() {
+      quantity++;
+      updateQuantity();
+    }
+
+    function decreaseQuantity() {
+      if (quantity > 1) {
+        quantity--;
+        updateQuantity();
+      }
+    }
+
+    // Initialize quantity display
+    updateQuantity();
+  </script>
+</body>
+</html>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Kashmiri Food - Payment</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'kashmir-saffron': '#D96C2B',
+            'kashmir-red': '#9D2C2B',
+            'kashmir-green': '#4E7D36',
+            'kashmir-dark': '#2C1810',
+            'kashmir-light': '#F8F4E9',
+          },
+          fontFamily: {
+            'display': ['Playfair Display', 'serif'],
+            'body': ['Poppins', 'sans-serif'],
+          },
+          animation: {
+            'fade-in': 'fadeIn 0.8s ease-out forwards',
+            'slide-up': 'slideUp 0.6s ease-out forwards',
+            'pulse-gentle': 'pulseGentle 2s infinite',
+            'float': 'float 3s ease-in-out infinite',
+          }
+        }
+      }
+    }
+  </script>
+  <style type="text/css">
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes pulseGentle {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.03); }
+      100% { transform: scale(1); }
+    }
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-8px); }
+      100% { transform: translateY(0px); }
+    }
+    .animate-fade-in {
+      opacity: 0;
+      animation: fadeIn 0.8s ease-out forwards;
+    }
+    .animate-slide-up {
+      opacity: 0;
+      animation: slideUp 0.6s ease-out forwards;
+    }
+    .animate-pulse-gentle {
+      animation: pulseGentle 2s infinite;
+    }
+    .animate-float {
+      animation: float 3s ease-in-out infinite;
+    }
+  </style>
+</head>
+<body class="bg-kashmir-light min-h-screen flex items-center justify-center p-4 font-body">
+  <div class="bg-white shadow-xl rounded-2xl p-6 md:p-8 max-w-lg w-full animate-slide-up border border-kashmir-light">
+    <!-- Decorative elements -->
+    <div class="absolute -top-4 -right-4 w-24 h-24 bg-kashmir-saffron/10 rounded-full animate-pulse-gentle"></div>
+    <div class="absolute -bottom-4 -left-4 w-20 h-20 bg-kashmir-red/10 rounded-full animate-pulse-gentle" style="animation-delay: 0.5s;"></div>
+
+    <!-- Header -->
+    <div class="text-center mb-6">
+      <div class="inline-block mb-3 text-4xl text-kashmir-red animate-float">🍛</div>
+      <h1 class="text-3xl font-bold font-display text-kashmir-dark">Complete Your Order</h1>
+      <p class="text-kashmir-dark/70 mt-2">Savor the authentic taste of Kashmir</p>
+    </div>
+
+    <!-- Payment Method -->
+    <div class="mb-6 animate-fade-in" style="animation-delay: 0.2s;">
+      <h2 class="font-semibold text-lg mb-3 text-kashmir-dark flex items-center">
+        <i class="fas fa-credit-card mr-2 text-kashmir-saffron"></i> Payment Method
+      </h2>
+      <div class="relative">
+        <select id="paymentMethod" name="payment_method"
+                class="w-full rounded-xl border border-gray-200 py-3 px-4 text-kashmir-dark focus:ring-2 focus:ring-kashmir-saffron/30 focus:border-kashmir-saffron transition-all appearance-none bg-white pr-10">
+          <option value="cod">Cash on Delivery</option>
+          <option value="wallet">Wallet Payment</option>
+        </select>
+        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-kashmir-saffron">
+          <i class="fas fa-chevron-down"></i>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cart Summary -->
+    <div class="mb-6 p-5 bg-kashmir-light/50 rounded-xl animate-fade-in" style="animation-delay: 0.4s;">
+      <h2 class="font-semibold text-lg mb-3 text-kashmir-dark flex items-center">
+        <i class="fas fa-receipt mr-2 text-kashmir-saffron"></i> Order Summary
+      </h2>
+
+      <div class="space-y-3 mb-4">
+        {% for id, item in cart.items() %}
+          <div class="flex justify-between items-center py-2 border-b border-white">
+            <div>
+              <span class="font-medium text-kashmir-dark">{{ item.title }}</span>
+              <span class="text-sm text-kashmir-dark/70 block">Qty: {{ item.quantity }}</span>
+            </div>
+            <span class="font-semibold text-kashmir-red">Rs. {{ item.price * item.quantity }}</span>
+          </div>
+        {% endfor %}
+      </div>
+
+      <div class="space-y-2 pt-2">
+        <div class="flex justify-between">
+          <span class="text-kashmir-dark">Subtotal:</span>
+          <span class="font-medium text-kashmir-dark">Rs. {{ total }}</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-kashmir-dark">Delivery Charges:</span>
+          <span class="font-medium text-kashmir-dark">Rs. {{ delivery_charges }}</span>
+        </div>
+        <div class="border-t border-kashmir-saffron/20 pt-2 mt-2">
+          <div class="flex justify-between font-bold text-lg">
+            <span class="text-kashmir-red">Total Amount:</span>
+            <span class="text-kashmir-red">Rs. {{ subtotal }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Buttons -->
+    <div class="text-center animate-fade-in" style="animation-delay: 0.6s;">
+      <!-- COD Form -->
+      <form id="codForm" method="POST" action="{{ url_for('place_order') }}">
+        <button type="submit"
+                class="w-full bg-gradient-to-r from-kashmir-red to-kashmir-saffron text-white py-3 px-6 rounded-xl font-semibold hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-kashmir-saffron/50">
+          <i class="fas fa-truck mr-2"></i> Place Order (Cash on Delivery)
+        </button>
+      </form>
+
+      <!-- Wallet Form (hidden by default) -->
+      <form id="walletForm" method="POST" action="{{ url_for('place_order_wallet') }}" class="hidden mt-4">
+        <button type="submit"
+                class="w-full bg-gradient-to-r from-kashmir-green to-kashmir-saffron text-white py-3 px-6 rounded-xl font-semibold hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-kashmir-green/50">
+          <i class="fas fa-wallet mr-2"></i> Pay with Wallet
+        </button>
+      </form>
+    </div>
+
+    <!-- Security Note -->
+    <div class="mt-6 text-center text-sm text-kashmir-dark/60 animate-fade-in" style="animation-delay: 0.8s;">
+      <i class="fas fa-lock mr-1"></i> Your payment information is secure and encrypted
+    </div>
+  </div>
+
+  <script>
+    const paymentSelect = document.getElementById("paymentMethod");
+    const codForm = document.getElementById("codForm");
+    const walletForm = document.getElementById("walletForm");
+
+    paymentSelect.addEventListener("change", () => {
+      if (paymentSelect.value === "wallet") {
+        codForm.classList.add("hidden");
+        walletForm.classList.remove("hidden");
+      } else {
+        codForm.classList.remove("hidden");
+        walletForm.classList.add("hidden");
+      }
+    });
+
+    // Initialize animation on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      const elements = document.querySelectorAll('.animate-fade-in, .animate-slide-up');
+      elements.forEach((el, index) => {
+        el.style.animationDelay = `${index * 0.2}s`;
+      });
+    });
+  </script>
+</body>
+</html>

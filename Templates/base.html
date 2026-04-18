@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kashmiri Food - Authentic Cuisine</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'kashmir-saffron': '#D96C2B',
+            'kashmir-red': '#9D2C2B',
+            'kashmir-green': '#4E7D36',
+            'kashmir-dark': '#2C1810',
+            'kashmir-light': '#F8F4E9',
+          },
+          fontFamily: {
+            'display': ['Playfair Display', 'serif'],
+            'body': ['Poppins', 'sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+  <style type="text/css">
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #F8F4E9;
+      color: #2C1810;
+      scroll-behavior: smooth;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo-text {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      color: #FFFFFF;
+      position: relative;
+      letter-spacing: 0.5px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      background: linear-gradient(to right, #FFD700, #D96C2B);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      padding: 0 5px;
+      border-radius: 5px;
+      transition: all 0.3s ease;
+    }
+
+    .logo-text:hover {
+      transform: scale(1.05);
+      text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.4);
+    }
+
+    .logo-badge {
+      display: inline-flex;
+      align-items: center;
+      background: linear-gradient(145deg, #9D2C2B, #7A1F1E);
+      padding: 5px 12px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .logo-icon {
+      margin-right: 8px;
+      color: #FFD700;
+      filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.3));
+    }
+
+    .sticky-nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      transition: all 0.3s ease;
+      background: #9D2C2B;
+    }
+
+    .nav-scrolled {
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .social-icon {
+      transition: all 0.3s ease;
+    }
+
+    .social-icon:hover {
+      transform: translateY(-3px);
+      color: #D96C2B;
+    }
+
+    .nav-link {
+      position: relative;
+      padding: 0.5rem 0;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: #D96C2B;
+      transition: width 0.3s ease;
+    }
+
+    .nav-link:hover::after {
+      width: 100%;
+    }
+
+    .nav-icon {
+      margin-right: 8px;
+      width: 18px;
+      text-align: center;
+    }
+
+    .btn-primary {
+      background: #D96C2B;
+      color: white;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(217, 108, 43, 0.4);
+      background: #C45A22;
+    }
+
+    .btn-wallet {
+      background: #4E7D36;
+      color: white;
+      transition: all 0.3s ease;
+    }
+
+    .btn-wallet:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(78, 125, 54, 0.4);
+      background: #3E6A29;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .animate-fade-in {
+      animation: fadeIn 0.6s ease-out;
+    }
+
+    footer {
+      background: #9D2C2B;
+    }
+
+    .spice-pattern {
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23D96C2B' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+
+    /* Mobile menu styles */
+    @media (max-width: 767px) {
+      .mobile-nav-item {
+        display: flex;
+        align-items: center;
+        padding: 12px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .mobile-nav-icon {
+        width: 20px;
+        margin-right: 12px;
+        text-align: center;
+      }
+    }
+
+    /* Custom utensils logo */
+    .utensils-logo {
+      display: inline-block;
+      width: 32px;
+      height: 32px;
+      margin-right: 10px;
+    }
+  </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+  <!-- Navbar -->
+  <nav class="sticky-nav text-white px-4 sm:px-8 py-4 flex justify-between items-center transition-all duration-300">
+    <div class="logo-container">
+      <!-- Logo with stylish text -->
+      <div class="logo-badge">
+        <div class="utensils-logo">
+          <!-- Custom plate, knife and fork logo -->
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <!-- Plate -->
+            <circle cx="50" cy="50" r="40" fill="#F8F4E9" stroke="#D96C2B" stroke-width="2"/>
+            <circle cx="50" cy="50" r="35" fill="none" stroke="#9D2C2B" stroke-width="1"/>
+
+            <!-- Knife -->
+            <rect x="30" y="20" width="5" height="45" rx="2" fill="#D96C2B"/>
+            <path d="M30 20 L20 15 L30 25 Z" fill="#9D2C2B"/>
+
+            <!-- Fork -->
+            <rect x="65" y="20" width="5" height="45" rx="2" fill="#D96C2B"/>
+            <rect x="60" y="20" width="5" height="10" rx="1" fill="#9D2C2B"/>
+            <rect x="65" y="20" width="5" height="10" rx="1" fill="#9D2C2B"/>
+            <rect x="70" y="20" width="5" height="10" rx="1" fill="#9D2C2B"/>
+          </svg>
+        </div>
+        <div class="text-2xl logo-text">Kashmiri Food</div>
+      </div>
+    </div>
+
+    <!-- Mobile menu button -->
+    <div class="md:hidden">
+      <button id="mobile-menu-button" class="text-white focus:outline-none">
+        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Desktop Navigation -->
+    <ul class="hidden md:flex items-center space-x-4 lg:space-x-6">
+      <li>
+        <a href="/" class="nav-link hover:text-kashmir-saffron">
+          <i class="fas fa-home nav-icon"></i>Home
+        </a>
+      </li>
+      <li>
+        <a href="/menu" class="nav-link hover:text-kashmir-saffron">
+          <i class="fas fa-utensils nav-icon"></i>Menu
+        </a>
+      </li>
+      <li>
+        <a href="/services" class="nav-link hover:text-kashmir-saffron">
+          <i class="fas fa-concierge-bell nav-icon"></i>Services
+        </a>
+      </li>
+      <li>
+        <a href="/about" class="nav-link hover:text-kashmir-saffron">
+          <i class="fas fa-info-circle nav-icon"></i>About
+        </a>
+      </li>
+      <li>
+        <a href="/contact" class="nav-link hover:text-kashmir-saffron">
+          <i class="fas fa-phone-alt nav-icon"></i>Contact
+        </a>
+      </li>
+      <li>
+        <a href="/complain" class="nav-link hover:text-kashmir-saffron">
+          <i class="fas fa-exclamation-circle nav-icon"></i>Complain
+        </a>
+      </li>
+
+
+      <!-- Cart icon with text -->
+      <li class="relative">
+        <a href="{{ url_for('cart') }}" class="nav-link hover:text-kashmir-saffron">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-1.3 5.2a1 1 0 00.9 1.3h12.8a1 1 0 00.9-1.3L17 13M7 13h10"/>
+          </svg>
+          Cart
+          {% if cart_count and cart_count > 0 %}
+            <span class="cart-count absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-2 py-0.5">
+              {{ cart_count }}
+            </span>
+          {% endif %}
+        </a>
+      </li>
+
+      <!-- Add Wallet Button -->
+      <li>
+        <a href="/user_dashboard" class="nav-link hover:text-kashmir-saffron">
+          <i class="fas fa-plus-circle mr-2"></i>user dashboard
+        </a>
+      </li>
+
+      <!-- Login/Signup -->
+      <li>
+        <a href="/user_signup" class="btn-primary px-4 py-2 rounded-full text-sm font-medium flex items-center">
+          <i class="fas fa-user-circle mr-2"></i>Login / Signup
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- Mobile menu (hidden by default) -->
+  <div id="mobile-menu" class="hidden md:hidden bg-kashmir-red text-white px-6 py-4 shadow-lg">
+    <ul class="space-y-2">
+      <li class="mobile-nav-item">
+        <i class="fas fa-home mobile-nav-icon"></i>
+        <a href="/" class="hover:text-kashmir-saffron transition-colors duration-300 font-medium">Home</a>
+      </li>
+      <li class="mobile-nav-item">
+        <i class="fas fa-utensils mobile-nav-icon"></i>
+        <a href="/menu" class="hover:text-kashmir-saffron transition-colors duration-300 font-medium">Menu</a>
+      </li>
+      <li class="mobile-nav-item">
+        <i class="fas fa-concierge-bell mobile-nav-icon"></i>
+        <a href="/services" class="hover:text-kashmir-saffron transition-colors duration-300 font-medium">Services</a>
+      </li>
+      <li class="mobile-nav-item">
+        <i class="fas fa-info-circle mobile-nav-icon"></i>
+        <a href="/about" class="hover:text-kashmir-saffron transition-colors duration-300 font-medium">About</a>
+      </li>
+      <li class="mobile-nav-item">
+        <i class="fas fa-phone-alt mobile-nav-icon"></i>
+        <a href="/contact" class="hover:text-kashmir-saffron transition-colors duration-300 font-medium">Contact</a>
+      </li>
+      <li class="mobile-nav-item">
+        <i class="fas fa-exclamation-circle mobile-nav-icon"></i>
+        <a href="/complain" class="hover:text-kashmir-saffron transition-colors duration-300 font-medium">Complain</a>
+      </li>
+      <li class="mobile-nav-item">
+        <i class="fas fa-wallet mobile-nav-icon"></i>
+        <a href="/my_wallet" class="hover:text-kashmir-saffron transition-colors duration-300 font-medium">My Wallet</a>
+      </li>
+      <!-- Add Wallet in Mobile Menu -->
+      <li class="mobile-nav-item">
+        <i class="fas fa-plus-circle mobile-nav-icon"></i>
+        <a href="/add_wallet" class="hover:text-kashmir-saffron transition-colors duration-300 font-medium">Add Wallet</a>
+      </li>
+      <li class="pt-4 border-t border-kashmir-saffron border-opacity-20 flex justify-between items-center">
+        <div class="flex space-x-4">
+          <a href="{{ url_for('cart') }}" class="text-white hover:text-kashmir-saffron relative flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-1.3 5.2a1 1 0 00.9 1.3h12.8a1 1 0 00.9-1.3L17 13M7 13h10"/>
+            </svg>
+            Cart
+            {% if cart_count and cart_count > 0 %}
+              <span class="cart-count absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-1">
+                {{ cart_count }}
+              </span>
+            {% endif %}
+          </a>
+        </div>
+        <a href="/user_signup" class="btn-primary px-4 py-2 rounded-full text-sm font-medium flex items-center">
+          <i class="fas fa-user-circle mr-2"></i>Login
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Content -->
+  <main class="flex-grow">
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- Footer -->
+  <footer class="text-white py-12 mt-16">
+    <div class="container mx-auto px-6">
+      <div class="flex flex-col md:flex-row justify-between items-center">
+
+        <!-- Website Info -->
+        <div class="text-center md:text-left mb-8 md:mb-0">
+          <div class="flex items-center justify-center md:justify-start">
+            <div class="logo-badge">
+              <div class="utensils-logo">
+                <!-- Custom plate, knife and fork logo (same as navbar) -->
+                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                  <!-- Plate -->
+                  <circle cx="50" cy="50" r="40" fill="#F8F4E9" stroke="#D96C2B" stroke-width="2"/>
+                  <circle cx="50" cy="50" r="35" fill="none" stroke="#9D2C2B" stroke-width="1"/>
+
+                  <!-- Knife -->
+                  <rect x="30" y="20" width="5" height="45" rx="2" fill="#D96C2B"/>
+                  <path d="M30 20 L20 15 L30 25 Z" fill="#9D2C2B"/>
+
+                  <!-- Fork -->
+                  <rect x="65" y="20" width="5" height="45" rx="2" fill="#D96C2B"/>
+                  <rect x="60" y="20" width="5" height="10" rx="1" fill="#9D2C2B"/>
+                  <rect x="65" y="20" width="5" height="10" rx="1" fill="#9D2C2B"/>
+                  <rect x="70" y="20" width="5" height="10" rx="1" fill="#9D2C2B"/>
+                </svg>
+              </div>
+              <div class="text-2xl logo-text">Kashmiri Food</div>
+            </div>
+          </div>
+          <p class="text-sm text-gray-200 mt-2 max-w-md">Experience the rich flavors and aromatic spices of traditional Kashmiri cooking, prepared with authentic recipes passed down through generations.</p>
+        </div>
+
+        <!-- Social Links -->
+        <div class="flex space-x-6 mb-8 md:mb-0">
+          <a href="https://facebook.com/yourprofile" target="_blank" class="social-icon text-white hover:text-kashmir-saffron">
+            <i class="fab fa-facebook-f text-xl"></i>
+          </a>
+          <a href="https://instagram.com/yourprofile" target="_blank" class="social-icon text-white hover:text-kashmir-saffron">
+            <i class="fab fa-instagram text-xl"></i>
+          </a>
+          <a href="https://twitter.com/yourprofile" target="_blank" class="social-icon text-white hover:text-kashmir-saffron">
+            <i class="fab fa-twitter text-xl"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- Copyright -->
+      <div class="border-t border-kashmir-saffron border-opacity-20 mt-8 pt-8 text-center text-sm text-gray-300">
+        © 2025 Kashmiri Food. All rights reserved. Crafted with love for authentic food.
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile menu toggle
+    document.getElementById('mobile-menu-button').addEventListener('click', function() {
+      const menu = document.getElementById('mobile-menu');
+      menu.classList.toggle('hidden');
+      menu.classList.toggle('animate-fade-in');
+    });
+
+    // Sticky nav effect on scroll
+    window.addEventListener('scroll', function() {
+      const nav = document.querySelector('.sticky-nav');
+      if (window.scrollY > 10) {
+        nav.classList.add('nav-scrolled');
+      } else {
+        nav.classList.remove('nav-scrolled');
+      }
+    });
+
+    // Close mobile menu when clicking outside
+    document.addEventListener('click', function(event) {
+      const menu = document.getElementById('mobile-menu');
+      const menuButton = document.getElementById('mobile-menu-button');
+
+      if (!menu.contains(event.target) && !menuButton.contains(event.target) && !menu.classList.contains('hidden')) {
+        menu.classList.add('hidden');
+      }
+    });
+  </script>
+
+</body>
+</html>

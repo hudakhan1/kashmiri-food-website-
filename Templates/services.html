@@ -1,0 +1,519 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+    /* Services Section Styles */
+    .services-section {
+        padding: 5rem 1rem;
+        background: linear-gradient(to bottom, #F8F4E9, #FFFFFF);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .section-header {
+        text-align: center;
+        margin-bottom: 4rem;
+    }
+
+    .section-title {
+        font-family: 'Playfair Display', serif;
+        font-size: 3.2rem;
+        font-weight: 700;
+        color: #9D2C2B;
+        margin-bottom: 1rem;
+        position: relative;
+        display: inline-block;
+        opacity: 0;
+        transform: translateY(30px);
+        animation: fadeInUp 1s forwards;
+        animation-delay: 0.3s;
+    }
+
+    .section-title::after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        background: linear-gradient(90deg, #9D2C2B, #D96C2B);
+        transform: scaleX(0);
+        transform-origin: left;
+        animation: lineReveal 1.5s forwards;
+        animation-delay: 0.8s;
+    }
+
+    .section-subtitle {
+        font-size: 1.2rem;
+        color: #2C1810;
+        max-width: 600px;
+        margin: 0 auto;
+        opacity: 0;
+        transform: translateY(20px);
+        animation: fadeInUp 1s forwards;
+        animation-delay: 0.5s;
+    }
+
+    /* Services Slider */
+    .services-slider {
+        position: relative;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 50px;
+    }
+
+    .slider-container {
+        overflow: hidden;
+        border-radius: 20px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    }
+
+    .slider-track {
+        display: flex;
+        transition: transform 0.5s ease;
+    }
+
+    .service-slide {
+        min-width: 100%;
+        padding: 3rem 2rem;
+        background: white;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    /* Alternate background colors for slides */
+    .service-slide:nth-child(even) {
+        background: linear-gradient(to bottom right, #F8F4E9, #FFFFFF);
+    }
+
+    .service-icon {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 2rem;
+        position: relative;
+        background: linear-gradient(135deg, #9D2C2B, #D96C2B);
+        color: white;
+        font-size: 2.5rem;
+        box-shadow: 0 10px 20px rgba(157, 44, 43, 0.2);
+        animation: pulse 2s infinite;
+    }
+
+    .service-title {
+        font-family: 'Playfair Display', serif;
+        font-size: 2rem;
+        font-weight: 700;
+        color: #9D2C2B;
+        margin-bottom: 1rem;
+    }
+
+    .service-description {
+        color: #2C1810;
+        margin-bottom: 2rem;
+        max-width: 500px;
+    }
+
+    .service-features {
+        width: 100%;
+        max-width: 400px;
+        margin-bottom: 2rem;
+    }
+
+    .feature-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1rem;
+        padding: 0.8rem 1rem;
+        background: rgba(157, 44, 43, 0.05);
+        border-radius: 10px;
+        transition: all 0.3s ease;
+    }
+
+    .feature-item:hover {
+        background: rgba(157, 44, 43, 0.1);
+        transform: translateX(5px);
+    }
+
+    .feature-icon {
+        margin-right: 1rem;
+        color: #D96C2B;
+        font-size: 1.2rem;
+    }
+
+    .service-button {
+        display: inline-block;
+        background: linear-gradient(135deg, #9D2C2B, #D96C2B);
+        color: white;
+        padding: 1rem 2rem;
+        border-radius: 50px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        box-shadow: 0 5px 15px rgba(157, 44, 43, 0.2);
+    }
+
+    .service-button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(157, 44, 43, 0.3);
+    }
+
+    /* Slider Navigation */
+    .slider-nav {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        z-index: 10;
+    }
+
+    .slider-nav:hover {
+        background: #9D2C2B;
+    }
+
+    .slider-nav:hover i {
+        color: white;
+    }
+
+    .slider-nav.prev {
+        left: 0;
+    }
+
+    .slider-nav.next {
+        right: 0;
+    }
+
+    .slider-nav i {
+        color: #9D2C2B;
+        font-size: 1.5rem;
+        transition: color 0.3s ease;
+    }
+
+    /* Slider Dots */
+    .slider-dots {
+        display: flex;
+        justify-content: center;
+        margin-top: 2rem;
+        gap: 10px;
+    }
+
+    .dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: rgba(157, 44, 43, 0.3);
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .dot.active {
+        background: #9D2C2B;
+        transform: scale(1.2);
+    }
+
+    /* Animation Keyframes */
+    @keyframes lineReveal {
+        0% {
+            transform: scaleX(0);
+        }
+        100% {
+            transform: scaleX(1);
+        }
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes pulse {
+        0% {
+            transform: scale(1);
+            box-shadow: 0 10px 20px rgba(157, 44, 43, 0.2);
+        }
+        50% {
+            transform: scale(1.05);
+            box-shadow: 0 15px 30px rgba(157, 44, 43, 0.3);
+        }
+        100% {
+            transform: scale(1);
+            box-shadow: 0 10px 20px rgba(157, 44, 43, 0.2);
+        }
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 768px) {
+        .services-slider {
+            padding: 0 30px;
+        }
+
+        .slider-nav {
+            width: 40px;
+            height: 40px;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+        }
+
+        .service-slide {
+            padding: 2rem 1.5rem;
+        }
+
+        .service-title {
+            font-size: 1.8rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .services-slider {
+            padding: 0 20px;
+        }
+
+        .slider-nav {
+            width: 35px;
+            height: 35px;
+        }
+
+        .section-title {
+            font-size: 2rem;
+        }
+
+        .service-icon {
+            width: 80px;
+            height: 80px;
+            font-size: 2rem;
+        }
+    }
+</style>
+
+<!-- Services Section -->
+<section class="services-section">
+    <div class="container mx-auto">
+        <div class="section-header">
+            <h2 class="section-title">Our Premium Services</h2>
+            <p class="section-subtitle">Experience the best of Kashmiri cuisine with our exceptional services tailored for food lovers</p>
+        </div>
+
+        <div class="services-slider">
+            <!-- Navigation Arrows -->
+            <div class="slider-nav prev">
+                <i class="fas fa-chevron-left"></i>
+            </div>
+
+            <div class="slider-nav next">
+                <i class="fas fa-chevron-right"></i>
+            </div>
+
+            <!-- Slider Container -->
+            <div class="slider-container">
+                <div class="slider-track">
+                    <!-- Service 1 -->
+                    <div class="service-slide">
+                        <div class="service-icon">
+                            <i class="fas fa-utensils"></i>
+                        </div>
+                        <h3 class="service-title">Traditional Dining Experience</h3>
+                        <p class="service-description">
+                            Immerse yourself in the authentic flavors of Kashmir with our traditional dining service.
+                            Experience the rich culinary heritage passed down through generations.
+                        </p>
+
+                        <div class="service-features">
+                            <div class="feature-item">
+                                <span class="feature-icon"><i class="fas fa-check-circle"></i></span>
+                                <span>Authentic Wazwan cuisine</span>
+                            </div>
+                            <div class="feature-item">
+                                <span class="feature-icon"><i class="fas fa-check-circle"></i></span>
+                                <span>Traditional serving style</span>
+                            </div>
+                            <div class="feature-item">
+                                <span class="feature-icon"><i class="fas fa-check-circle"></i></span>
+                                <span>Family-style meals</span>
+                            </div>
+                            <div class="feature-item">
+                                <span class="feature-icon"><i class="fas fa-check-circle"></i></span>
+                                <span>Cultural ambiance</span>
+                            </div>
+                        </div>
+
+<!--                        <a href="#" class="service-button">Book Experience</a>-->
+                    </div>
+
+                    <!-- Service 2 -->
+                    <div class="service-slide">
+                        <div class="service-icon">
+                            <i class="fas fa-truck"></i>
+                        </div>
+                        <h3 class="service-title">Home Delivery Service</h3>
+                        <p class="service-description">
+                            Enjoy the taste of Kashmir in the comfort of your home. Our carefully packaged meals
+                            arrive fresh and ready to enjoy, bringing authentic flavors to your doorstep.
+                        </p>
+
+                        <div class="service-features">
+                            <div class="feature-item">
+                                <span class="feature-icon"><i class="fas fa-check-circle"></i></span>
+                                <span>Quick delivery within city</span>
+                            </div>
+                            <div class="feature-item">
+                                <span class="feature-icon"><i class="fas fa-check-circle"></i></span>
+                                <span>Eco-friendly packaging</span>
+                            </div>
+                            <div class="feature-item">
+                                <span class="feature-icon"><i class="fas fa-check-circle"></i></span>
+                                <span>Temperature controlled containers</span>
+                            </div>
+                            <div class="feature-item">
+                                <span class="feature-icon"><i class="fas fa-check-circle"></i></span>
+                                <span>Real-time order tracking</span>
+                            </div>
+                        </div>
+
+<!--                        <a href="#" class="service-button">Order Now</a>-->
+                    </div>
+
+                    <!-- Service 3 - Updated Special Dining Service -->
+                    <div class="service-slide">
+                        <div class="service-icon">
+                            <i class="fas fa-crown"></i>
+                        </div>
+                        <h3 class="service-title">Special Dining Services</h3>
+                        <p class="service-description">
+                            Experience exclusive Kashmiri dining with our special services. Perfect for those
+                            seeking an elevated culinary journey through the flavors of Kashmir.
+                        </p>
+
+                        <div class="service-features">
+                            <div class="feature-item">
+                                <span class="feature-icon"><i class="fas fa-check-circle"></i></span>
+                                <span>Premium ingredient selection</span>
+                            </div>
+                            <div class="feature-item">
+                                <span class="feature-icon"><i class="fas fa-check-circle"></i></span>
+                                <span>Exclusive menu options</span>
+                            </div>
+                            <div class="feature-item">
+                                <span class="feature-icon"><i class="fas fa-check-circle"></i></span>
+                                <span>Personalized dining experience</span>
+                            </div>
+                            <div class="feature-item">
+                                <span class="feature-icon"><i class="fas fa-check-circle"></i></span>
+                                <span>Signature Kashmiri dishes</span>
+                            </div>
+                        </div>
+
+<!--                        <a href="#" class="service-button">Explore Services</a>-->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slider Dots -->
+            <div class="slider-dots">
+                <div class="dot active" data-index="0"></div>
+                <div class="dot" data-index="1"></div>
+                <div class="dot" data-index="2"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const track = document.querySelector('.slider-track');
+        const slides = document.querySelectorAll('.service-slide');
+        const dots = document.querySelectorAll('.dot');
+        const prevButton = document.querySelector('.slider-nav.prev');
+        const nextButton = document.querySelector('.slider-nav.next');
+
+        let currentIndex = 0;
+        const slideCount = slides.length;
+
+        // Function to update slider position
+        function updateSlider() {
+            track.style.transform = `translateX(-${currentIndex * 100}%)`;
+
+            // Update active dot
+            dots.forEach((dot, index) => {
+                if (index === currentIndex) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+        }
+
+        // Next slide
+        function nextSlide() {
+            currentIndex = (currentIndex + 1) % slideCount;
+            updateSlider();
+        }
+
+        // Previous slide
+        function prevSlide() {
+            currentIndex = (currentIndex - 1 + slideCount) % slideCount;
+            updateSlider();
+        }
+
+        // Auto slide every 5 seconds
+        let slideInterval = setInterval(nextSlide, 5000);
+
+        // Event listeners
+        nextButton.addEventListener('click', () => {
+            clearInterval(slideInterval);
+            nextSlide();
+            slideInterval = setInterval(nextSlide, 5000);
+        });
+
+        prevButton.addEventListener('click', () => {
+            clearInterval(slideInterval);
+            prevSlide();
+            slideInterval = setInterval(nextSlide, 5000);
+        });
+
+        // Dot navigation
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                clearInterval(slideInterval);
+                currentIndex = index;
+                updateSlider();
+                slideInterval = setInterval(nextSlide, 5000);
+            });
+        });
+
+        // Pause auto-slide on hover
+        const sliderContainer = document.querySelector('.slider-container');
+        sliderContainer.addEventListener('mouseenter', () => {
+            clearInterval(slideInterval);
+        });
+
+        sliderContainer.addEventListener('mouseleave', () => {
+            slideInterval = setInterval(nextSlide, 5000);
+        });
+
+        // Initialize slider
+        updateSlider();
+    });
+</script>
+
+{% endblock %}

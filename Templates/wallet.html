@@ -1,0 +1,232 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="min-h-screen bg-kashmir-light flex items-center justify-center py-8 px-4">
+  <div class="bg-white shadow-xl rounded-2xl w-full max-w-md mx-4 p-4 md:p-6 lg:p-8 animate-slideIn">
+    <!-- Header with Icon -->
+    <div class="text-center mb-6">
+      <div class="inline-flex items-center justify-center w-16 h-16 bg-kashmir-saffron/20 rounded-full mb-4">
+        <i class="fas fa-wallet text-3xl text-kashmir-saffron"></i>
+      </div>
+      <h2 class="text-2xl md:text-3xl font-bold text-kashmir-red">Add Wallet Information</h2>
+      <p class="text-kashmir-dark mt-2">Complete your payment details</p>
+    </div>
+
+    <form action="/wallet" method="POST" enctype="multipart/form-data" class="space-y-4 md:space-y-5">
+      <!-- Name -->
+      <div>
+        <label class="block text-sm font-semibold text-kashmir-dark mb-2 flex items-center">
+          <i class="fas fa-user text-kashmir-saffron mr-2"></i>Full Name
+        </label>
+        <input type="text" name="name" class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-kashmir-saffron focus:border-transparent transition-all duration-300" required>
+      </div>
+
+      <!-- Amount -->
+      <div>
+        <label class="block text-sm font-semibold text-kashmir-dark mb-2 flex items-center">
+          <i class="fas fa-money-bill-wave text-kashmir-saffron mr-2"></i>Amount
+        </label>
+        <div class="relative">
+          <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-kashmir-dark"></span>
+          <input type="number" name="amount" class="w-full border border-gray-300 rounded-xl pl-8 pr-4 py-3 focus:outline-none focus:ring-2 focus:ring-kashmir-saffron focus:border-transparent transition-all duration-300" required>
+        </div>
+      </div>
+
+      <!-- CNIC -->
+      <div>
+        <label class="block text-sm font-semibold text-kashmir-dark mb-2 flex items-center">
+          <i class="fas fa-id-card text-kashmir-saffron mr-2"></i>CNIC Number
+        </label>
+        <input type="text" name="cnic" placeholder="12345-6789012-3" class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-kashmir-saffron focus:border-transparent transition-all duration-300" required>
+      </div>
+
+      <!-- Image Upload -->
+      <div>
+        <label class="block text-sm font-semibold text-kashmir-dark mb-2 flex items-center">
+          <i class="fas fa-image text-kashmir-saffron mr-2"></i>Upload Payment Proof
+        </label>
+        <div class="border-2 border-dashed border-kashmir-saffron/30 rounded-xl p-4 text-center transition-all duration-300 hover:border-kashmir-saffron/50">
+          <input type="file" name="image" accept="image/*" class="hidden" id="fileInput" required>
+          <label for="fileInput" class="cursor-pointer block">
+            <i class="fas fa-cloud-upload-alt text-3xl text-kashmir-saffron mb-2"></i>
+            <p class="text-sm text-kashmir-dark">Click to upload image</p>
+            <p class="text-xs text-gray-500 mt-1">PNG, JPG up to 5MB</p>
+          </label>
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <button type="submit" class="w-full bg-kashmir-red text-white font-bold py-3 px-4 rounded-xl hover:bg-kashmir-saffron transition-all duration-300 transform hover:scale-105 flex items-center justify-center">
+        <i class="fas fa-paper-plane mr-2"></i>Submit Payment
+      </button>
+    </form>
+
+    <!-- Additional Info -->
+    <div class="mt-6 p-4 bg-kashmir-light rounded-xl">
+      <h3 class="font-semibold text-kashmir-dark mb-2 flex items-center">
+        <i class="fas fa-info-circle text-kashmir-saffron mr-2"></i>Payment Instructions
+      </h3>
+      <ul class="text-sm text-kashmir-dark space-y-1">
+        <li>• Ensure all information is accurate</li>
+        <li>• Upload clear image of payment proof</li>
+        <li>• Processing may take 1-2 business days</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<style>
+  @keyframes slideIn {
+    from {
+      transform: translateY(40px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  .animate-slideIn {
+    animation: slideIn 0.8s ease forwards;
+  }
+
+  /* Kashmiri color variables */
+  .bg-kashmir-light {
+    background-color: #F8F4E9;
+  }
+
+  .text-kashmir-dark {
+    color: #2C1810;
+  }
+
+  .text-kashmir-red {
+    color: #9D2C2B;
+  }
+
+  .text-kashmir-saffron {
+    color: #D96C2B;
+  }
+
+  .bg-kashmir-red {
+    background-color: #9D2C2B;
+  }
+
+  .bg-kashmir-saffron {
+    background-color: #D96C2B;
+  }
+
+  .bg-kashmir-saffron\/20 {
+    background-color: rgba(217, 108, 43, 0.2);
+  }
+
+  .border-kashmir-saffron\/30 {
+    border-color: rgba(217, 108, 43, 0.3);
+  }
+
+  .border-kashmir-saffron\/50 {
+    border-color: rgba(217, 108, 43, 0.5);
+  }
+
+  .focus\:ring-kashmir-saffron:focus {
+    --tw-ring-color: rgba(217, 108, 43, 0.5);
+  }
+
+  /* Ensure no horizontal scrolling */
+  body, html {
+    overflow-x: hidden;
+    width: 100%;
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 640px) {
+    .rounded-xl {
+      border-radius: 12px;
+    }
+
+    .p-4 {
+      padding: 1rem;
+    }
+
+    .text-2xl {
+      font-size: 1.5rem;
+    }
+
+    .text-3xl {
+      font-size: 1.75rem;
+    }
+
+    .w-16 {
+      width: 3.5rem;
+    }
+
+    .h-16 {
+      height: 3.5rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .px-4 {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+
+    .py-3 {
+      padding-top: 0.75rem;
+      padding-bottom: 0.75rem;
+    }
+
+    .text-sm {
+      font-size: 0.875rem;
+    }
+
+    .text-xs {
+      font-size: 0.75rem;
+    }
+  }
+
+  @media (max-width: 360px) {
+    .text-2xl {
+      font-size: 1.25rem;
+    }
+
+    .text-3xl {
+      font-size: 1.5rem;
+    }
+
+    .w-16 {
+      width: 3rem;
+    }
+
+    .h-16 {
+      height: 3rem;
+    }
+
+    .text-3xl {
+      font-size: 1.5rem;
+    }
+  }
+</style>
+
+<script>
+  // Enhance file input functionality
+  document.getElementById('fileInput').addEventListener('change', function(e) {
+    const fileName = e.target.files[0]?.name;
+    if (fileName) {
+      const label = document.querySelector('label[for="fileInput"]');
+      label.innerHTML = `
+        <i class="fas fa-check-circle text-3xl text-green-500 mb-2"></i>
+        <p class="text-sm text-kashmir-dark truncate">${fileName}</p>
+        <p class="text-xs text-gray-500 mt-1">Click to change file</p>
+      `;
+    }
+  });
+
+  // Prevent horizontal scrolling
+  document.addEventListener('DOMContentLoaded', function() {
+    document.body.style.overflowX = 'hidden';
+    document.documentElement.style.overflowX = 'hidden';
+  });
+</script>
+
+{% endblock %}

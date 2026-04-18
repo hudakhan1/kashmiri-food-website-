@@ -1,0 +1,1021 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!-- Announcement Bar -->
+<div class="bg-gradient-to-r from-kashmir-red to-kashmir-saffron text-white py-3 overflow-hidden relative">
+  <div class="absolute top-0 left-0 w-8 h-full bg-gradient-to-r from-kashmir-red/100 to-kashmir-red/0"></div>
+  <div class="absolute top-0 right-0 w-8 h-full bg-gradient-to-l from-kashmir-saffron/100 to-kashmir-saffron/0"></div>
+
+  <div class="animate-marquee whitespace-nowrap flex items-center">
+    <span class="mx-8 flex items-center">
+      <i class="fas fa-bullhorn mr-3 text-kashmir-cream animate-pulse"></i>
+      {{ announcement.text }}
+    </span>
+  </div>
+</div>
+
+<style>
+/* Fix horizontal scroll issue */
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* Marquee animations */
+@keyframes marquee { 0% { transform: translateX(100%);} 100% { transform: translateX(-100%);} }
+@keyframes pulse { 0% { transform: scale(1);} 50% { transform: scale(1.1);} 100% { transform: scale(1);} }
+.animate-marquee { display:inline-block; min-width:100%; white-space:nowrap; animation:marquee 20s linear infinite; }
+.animate-pulse { animation:pulse 2s infinite; }
+
+/* Kashmiri colors */
+.bg-kashmir-red { background-color:#9D2C2B; }
+.bg-kashmir-saffron { background-color:#D96C2B; }
+.text-kashmir-cream { color:#F8F4E9; }
+</style>
+
+<!-- Hero Section -->
+<style>
+.hero-section {
+  min-height: 80vh; display:flex; align-items:center;
+  background: linear-gradient(to right, #F8F4E9 52%, transparent 48%);
+  overflow:hidden;
+}
+@media(max-width:968px){
+  .hero-section{flex-direction:column;text-align:center;background:#F8F4E9;padding:2rem 0;}
+}
+.hero-container{display:flex;align-items:center;justify-content:space-between;max-width:1200px;width:100%;margin:auto;padding:0 2rem;}
+.hero-content{flex:0 0 45%;padding-right:2rem;z-index:2;color:#2C1810;}
+.hero-image-slider{flex:0 0 50%;position:relative;height:500px;display:flex;align-items:center;justify-content:center;}
+.main-slide{width:380px;height:450px;border-radius:20px;overflow:hidden;box-shadow:0 20px 40px rgba(0,0,0,0.15);transition:all .6s;position:relative;z-index:3;}
+.side-slide{width:220px;height:280px;border-radius:15px;overflow:hidden;box-shadow:0 10px 25px rgba(0,0,0,0.1);position:absolute;opacity:.8;right:0;bottom:0;}
+.main-slide img,.side-slide img{width:100%;height:100%;object-fit:cover;}
+@media(max-width:968px){
+  .hero-content{margin-bottom:2rem;padding-right:0;}
+  .hero-image-slider{height:auto;width:100%;}
+  .main-slide{width:300px;height:350px;}
+  .side-slide{display:none;}
+}
+@media(max-width:640px){
+  .main-slide{width:220px;height:260px;}
+}
+</style>
+
+<section class="hero-section">
+  <div class="hero-container">
+    <div class="hero-content">
+      <h1 class="hero-title text-4xl md:text-5xl font-bold text-kashmir-red mb-4">
+        Authentic <span class="italic text-kashmir-saffron">Kashmiri Cuisine</span>
+      </h1>
+      <p class="hero-description text-lg text-kashmir-dark mb-6">Experience the rich, aromatic flavors of traditional Kashmiri dishes. Made with authentic spices and recipes passed down through generations.</p>
+      <a href="/menu" class="hero-button inline-block bg-kashmir-red text-white px-6 py-3 rounded-full font-semibold shadow-lg hover:bg-[#7A1F1E] transition">Explore Menu</a>
+    </div>
+
+    <div class="hero-image-slider">
+      <div class="main-slide slide-active">
+        <img src="{{ url_for('static', filename='images/food1.jpg') }}" alt="Dish">
+      </div>
+      <div class="side-slide slide-next">
+        <img src="{{ url_for('static', filename='images/food3.jpg') }}" alt="Dish">
+      </div>
+      <div class="slider-dots absolute bottom-5 left-1/2 -translate-x-1/2 flex gap-3">
+        <div class="slider-dot active w-3 h-3 rounded-full bg-white"></div>
+        <div class="slider-dot w-3 h-3 rounded-full bg-gray-300"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+document.addEventListener("DOMContentLoaded",()=>{
+  const slides=document.querySelectorAll(".main-slide,.side-slide");
+  const dots=document.querySelectorAll(".slider-dot");
+  let current=0;
+  function showSlide(n){
+    slides.forEach(s=>s.classList.remove("slide-active","slide-next","slide-hidden"));
+    current=(n+slides.length)%slides.length;
+    slides[current].classList.add("slide-active");
+    slides[(current+1)%slides.length].classList.add("slide-next");
+    dots.forEach(d=>d.classList.remove("active"));
+    dots[current].classList.add("active");
+  }
+  showSlide(0);
+  setInterval(()=>showSlide(current+1),3000);
+  dots.forEach((dot,i)=>dot.addEventListener("click",()=>showSlide(i)));
+});
+</script>
+
+
+
+<!-- Categories Section -->
+<!-- Categories Section (Slider Style) -->
+<style>
+    /* Categories Section Styles */
+    .categories-section {
+        padding: 4rem 1rem;
+        background: linear-gradient(to bottom, #F8F4E9, #FFFFFF);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .section-title {
+        font-family: 'Playfair Display', serif;
+        font-size: 2.8rem;
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 3rem;
+        color: #9D2C2B;
+        position: relative;
+        display: inline-block;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .section-title::after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        background: linear-gradient(90deg, #9D2C2B, #D96C2B);
+        transform: scaleX(0);
+        transform-origin: left;
+        animation: lineReveal 1.5s forwards;
+        animation-delay: 0.5s;
+    }
+
+    .title-icon {
+        display: inline-block;
+        margin-right: 15px;
+        animation: float 3s ease-in-out infinite;
+    }
+
+    .slider-container {
+        position: relative;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 40px;
+    }
+
+    .slider {
+        display: flex;
+        gap: 25px;
+        overflow-x: hidden;
+        scroll-behavior: smooth;
+        padding: 20px 10px;
+        scrollbar-width: none; /* Firefox */
+    }
+
+    .slider::-webkit-scrollbar {
+        display: none; /* Chrome, Safari, Edge */
+    }
+
+    .category-card {
+        min-width: 260px;
+        border-radius: 20px;
+        padding: 30px 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        color: white;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        transition: all 0.4s ease;
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    .category-card.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .category-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+    }
+
+    .card-image {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 4px solid white;
+        margin-top: -50px;
+        background: white;
+        padding: 5px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-title {
+        font-size: 1.4rem;
+        font-weight: 600;
+        margin: 20px 0 10px;
+    }
+
+    .card-button {
+        margin-top: 20px;
+        padding: 10px 25px;
+        border-radius: 30px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        background: white;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .slider-nav {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        background: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        z-index: 10;
+    }
+
+    .slider-nav:hover {
+        background: #9D2C2B;
+    }
+
+    .slider-nav:hover svg {
+        color: white;
+    }
+
+    .slider-nav.prev {
+        left: -10px;
+    }
+
+    .slider-nav.next {
+        right: -10px;
+    }
+
+    .slider-nav svg {
+        color: #9D2C2B;
+        width: 24px;
+        height: 24px;
+        transition: color 0.3s ease;
+    }
+
+    /* Card Colors */
+    .card-color-1 {
+        background: linear-gradient(135deg, #9D2C2B, #D96C2B);
+    }
+
+    .card-color-1 .card-button {
+        color: #9D2C2B;
+    }
+
+    .card-color-2 {
+        background: linear-gradient(135deg, #4E7D36, #93C572);
+    }
+
+    .card-color-2 .card-button {
+        color: #4E7D36;
+    }
+
+    .card-color-3 {
+        background: linear-gradient(135deg, #2C3E50, #4A6572);
+    }
+
+    .card-color-3 .card-button {
+        color: #2C3E50;
+    }
+
+    .card-color-4 {
+        background: linear-gradient(135deg, #7B1FA2, #9C27B0);
+    }
+
+    .card-color-4 .card-button {
+        color: #7B1FA2;
+    }
+
+    .card-color-5 {
+        background: linear-gradient(135deg, #D32F2F, #F44336);
+    }
+
+    .card-color-5 .card-button {
+        color: #D32F2F;
+    }
+
+    /* Animation Keyframes */
+    @keyframes float {
+        0% {
+            transform: translateY(0);
+        }
+        50% {
+            transform: translateY(-10px);
+        }
+        100% {
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes lineReveal {
+        0% {
+            transform: scaleX(0);
+        }
+        100% {
+            transform: scaleX(1);
+        }
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 768px) {
+        .section-title {
+            font-size: 2.2rem;
+        }
+
+        .slider-container {
+            padding: 0 30px;
+        }
+
+        .slider-nav {
+            width: 40px;
+            height: 40px;
+        }
+
+        .slider-nav.prev {
+            left: -5px;
+        }
+
+        .slider-nav.next {
+            right: -5px;
+        }
+
+        .category-card {
+            min-width: 220px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .section-title {
+            font-size: 1.8rem;
+        }
+
+        .title-icon {
+            margin-right: 10px;
+            width: 30px;
+        }
+
+        .slider-container {
+            padding: 0 20px;
+        }
+    }
+</style>
+
+
+
+
+<!-- Categories Section -->
+<section class="categories-section">
+    <div class="container mx-auto">
+        <h2 class="section-title">
+            <span class="title-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z"/>
+                </svg>
+            </span>
+            Our Categories
+        </h2>
+
+        <div class="slider-container">
+            <!-- Left Arrow -->
+            <div class="slider-nav prev">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+            </div>
+
+            <!-- Slider -->
+            <div class="slider">
+                <!-- Card 1 -->
+                <div class="category-card card-color-1">
+                    <img src="{{ url_for('static', filename='images/Main Course.jpg') }}" class="card-image" alt="Main Course">
+                    <h3 class="card-title">Main Course</h3>
+                    <p>Traditional Kashmiri main dishes</p>
+                    <button class="card-button" onclick="window.location.href='/menu'">Explore</button>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="category-card card-color-2">
+                    <img src="{{ url_for('static', filename='images/Appetizers.png') }}" class="card-image" alt="Appetizers">
+                    <h3 class="card-title">Appetizers</h3>
+                    <p>Delicious starters and snacks</p>
+                    <button class="card-button" onclick="window.location.href='/menu'">Explore</button>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="category-card card-color-3">
+                    <img src="{{ url_for('static', filename='images/Breads.jpg') }}" class="card-image" alt="Breads">
+                    <h3 class="card-title">Breads</h3>
+                    <p>Freshly baked traditional breads</p>
+                    <button class="card-button" onclick="window.location.href='/menu'">Explore</button>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="category-card card-color-4">
+                    <img src="{{ url_for('static', filename='images/Desserts.jpg') }}" class="card-image" alt="Desserts">
+                    <h3 class="card-title">Desserts</h3>
+                    <p>Sweet endings to your meal</p>
+                    <button class="card-button" onclick="window.location.href='/menu'">Explore</button>
+                </div>
+
+                <!-- Card 5 -->
+                <div class="category-card card-color-5">
+                    <img src="{{ url_for('static', filename='images/Beverages.jpg') }}" class="card-image" alt="Beverages">
+                    <h3 class="card-title">Beverages</h3>
+                    <p>Refreshing drinks & beverages</p>
+                    <button class="card-button" onclick="window.location.href='/menu'">Explore</button>
+                </div>
+            </div>
+
+            <!-- Right Arrow -->
+            <div class="slider-nav next">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const slider = document.querySelector('.slider');
+        const prevButton = document.querySelector('.slider-nav.prev');
+        const nextButton = document.querySelector('.slider-nav.next');
+        const cards = document.querySelectorAll('.category-card');
+        const exploreButtons = document.querySelectorAll('.card-button');
+
+        // Initialize cards animation
+        setTimeout(() => {
+            cards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.classList.add('visible');
+                }, index * 200);
+            });
+        }, 500);
+
+        // Scroll buttons functionality
+        prevButton.addEventListener('click', () => {
+            slider.scrollBy({ left: -300, behavior: 'smooth' });
+        });
+
+        nextButton.addEventListener('click', () => {
+            slider.scrollBy({ left: 300, behavior: 'smooth' });
+        });
+
+        // Navigate to menu page when Explore button is clicked
+        exploreButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                window.location.href = '/menu';
+            });
+        });
+
+        // Re-animate when section comes into view
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    // Re-trigger title animation
+                    const title = document.querySelector('.section-title');
+                    title.style.animation = 'none';
+                    setTimeout(() => {
+                        title.style.animation = '';
+                    }, 10);
+
+                    // Re-trigger card animations
+                    cards.forEach((card, index) => {
+                        card.classList.remove('visible');
+                        setTimeout(() => {
+                            card.classList.add('visible');
+                        }, index * 200);
+                    });
+                }
+            });
+        }, { threshold: 0.5 });
+
+        observer.observe(document.querySelector('.categories-section'));
+    });
+</script>
+
+<!-- Get Started Section -->
+<!-- Get Started Today Section -->
+<section class="py-16 px-6 md:px-12 bg-kashmir-light relative overflow-hidden">
+  <div class="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+
+    <!-- Left Content -->
+    <div class="relative">
+      <h2 class="text-4xl font-bold text-kashmir-dark mb-4 animate-fade-in">Get Started With Kashmiri Cuisine!</h2>
+      <p class="text-lg font-semibold text-kashmir-red mb-4 animate-fade-in" style="animation-delay: 0.2s;">
+        Experience the authentic taste of Kashmir with our traditional recipes.
+      </p>
+      <p class="text-kashmir-dark mb-8 animate-fade-in" style="animation-delay: 0.4s;">
+        Discover the rich culinary heritage of Kashmir with our handcrafted dishes made from traditional recipes passed down through generations. Each dish tells a story of culture, flavor, and authenticity.
+      </p>
+
+      <!-- Info Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Card 1 -->
+        <div class="bg-white shadow-lg rounded-xl p-6 text-center border border-kashmir-cream transform transition-all duration-500 hover:scale-105 hover:shadow-xl animate-fade-in" style="animation-delay: 0.6s;">
+          <div class="text-4xl mb-3 text-kashmir-saffron animate-bounce" style="animation-duration: 2s; animation-iteration-count: infinite;">🍛</div>
+          <h3 class="text-lg font-bold mb-2 text-kashmir-dark">Authentic Dishes</h3>
+          <p class="text-kashmir-dark text-sm">
+            Traditional Kashmiri recipes made with authentic spices and cooking techniques.
+          </p>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="bg-white shadow-lg rounded-xl p-6 text-center border border-kashmir-cream transform transition-all duration-500 hover:scale-105 hover:shadow-xl animate-fade-in" style="animation-delay: 0.8s;">
+          <div class="text-4xl mb-3 text-kashmir-saffron animate-pulse" style="animation-duration: 3s; animation-iteration-count: infinite;">👨‍🍳</div>
+          <h3 class="text-lg font-bold mb-2 text-kashmir-dark">Expert Chefs</h3>
+          <p class="text-kashmir-dark text-sm">
+            Our skilled chefs prepare each dish with precision and respect for tradition.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Image with Decorative Elements -->
+    <div class="flex justify-center relative">
+      <!-- Main circular container -->
+      <div class="w-80 h-80 bg-kashmir-saffron/20 rounded-full flex items-center justify-center relative animate-float" style="animation-duration: 6s;">
+        <!-- Inner circle -->
+        <div class="w-64 h-64 bg-kashmir-red/20 rounded-full flex items-center justify-center">
+          <!-- Image container -->
+          <div class="w-56 h-56 bg-white rounded-full overflow-hidden shadow-2xl border-4 border-kashmir-cream">
+            <img src="{{ url_for('static', filename='images/food2.jpg') }}"
+                 alt="Kashmiri Chef" class="w-full h-full object-cover">
+          </div>
+        </div>
+      </div>
+
+      <!-- Decorative small icons -->
+<!--      <span class="absolute top-4 right-16 text-4xl text-kashmir-saffron animate-spin-slow">🌶️</span>-->
+<!--      <span class="absolute bottom-8 left-8 text-4xl text-kashmir-red animate-bounce" style="animation-duration: 3s;">🍚</span>-->
+<!--      <span class="absolute top-1/2 -left-4 text-4xl text-kashmir-green animate-pulse" style="animation-duration: 4s;">🍃</span>-->
+    </div>
+  </div>
+
+  <!-- Floating decorative elements -->
+  <div class="absolute -top-10 -left-10 w-32 h-32 bg-kashmir-saffron/10 rounded-full animate-pulse"></div>
+  <div class="absolute -bottom-8 -right-8 w-40 h-40 bg-kashmir-red/10 rounded-full animate-pulse" style="animation-delay: 1s;"></div>
+</section>
+
+<style>
+  /* Custom animations */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes float {
+    0% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-15px);
+    }
+    100% {
+      transform: translateY(0px);
+    }
+  }
+
+  @keyframes spinSlow {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .animate-fade-in {
+    opacity: 0;
+    animation: fadeIn 1s forwards;
+  }
+
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .animate-spin-slow {
+    animation: spinSlow 10s linear infinite;
+  }
+
+  /* Kashmiri color variables */
+  .bg-kashmir-light {
+    background-color: #F8F4E9;
+  }
+
+  .text-kashmir-dark {
+    color: #2C1810;
+  }
+
+  .text-kashmir-red {
+    color: #9D2C2B;
+  }
+
+  .text-kashmir-saffron {
+    color: #D96C2B;
+  }
+
+  .text-kashmir-green {
+    color: #4E7D36;
+  }
+
+  .border-kashmir-cream {
+    border-color: #F8F4E9;
+  }
+
+  .bg-kashmir-saffron\/20 {
+    background-color: rgba(217, 108, 43, 0.2);
+  }
+
+  .bg-kashmir-red\/20 {
+    background-color: rgba(157, 44, 43, 0.2);
+  }
+
+  .bg-kashmir-green\/20 {
+    background-color: rgba(78, 125, 54, 0.2);
+  }
+</style>
+
+<script>
+  // Animation trigger when section comes into view
+  document.addEventListener('DOMContentLoaded', function() {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          // Reset animations for all animated elements
+          const animatedElements = entry.target.querySelectorAll('[class*="animate-"]');
+          animatedElements.forEach(el => {
+            const classes = el.className;
+            el.className = classes.replace(/\banimate-\w+/g, '');
+            setTimeout(() => {
+              el.className = classes;
+            }, 10);
+          });
+        }
+      });
+    }, { threshold: 0.3 });
+
+    observer.observe(document.querySelector('.bg-kashmir-light'));
+  });
+</script>
+
+<!-- Meet Our Best Team Section -->
+<section class="py-16 px-4 bg-kashmir-light relative overflow-hidden">
+  <div class="container mx-auto text-center">
+    <!-- Heading with Animation -->
+    <div class="mb-12">
+      <h2 class="text-3xl md:text-4xl font-bold text-kashmir-red mb-4 animate-title">
+        <span class="inline-block animate-float-icon">👨‍🍳</span>
+        Meet Our Culinary Masters
+        <span class="inline-block animate-float-icon" style="animation-delay: 0.5s;">👩‍🍳</span>
+      </h2>
+      <div class="w-24 h-1 bg-kashmir-saffron mx-auto mb-4 animate-line-expand"></div>
+      <p class="text-kashmir-dark max-w-2xl mx-auto animate-fade-in">
+        Our skilled chefs bring authentic Kashmiri flavors to your table with generations of culinary expertise.
+      </p>
+    </div>
+
+    <!-- Team Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+
+      <!-- Member 1 -->
+      <div class="team-card bg-white rounded-2xl shadow-lg p-6 text-center transform transition-all duration-500 animate-card-slide">
+        <div class="relative mx-auto mb-4 w-32 h-32">
+          <div class="absolute inset-0 bg-kashmir-saffron/20 rounded-full animate-pulse"></div>
+          <img src="{{ url_for('static', filename='images/chef1boy.jpg') }}" alt="Head Chef"
+               class="w-32 h-32 object-cover rounded-full border-4 border-kashmir-cream relative z-10 team-image">
+        </div>
+        <h3 class="text-xl font-semibold text-kashmir-dark mb-1 team-name">Ali Khan</h3>
+        <p class="text-kashmir-saffron font-medium mb-3 team-role">Head Chef</p>
+        <p class="text-kashmir-dark text-sm team-desc">Specializes in traditional Wazwan cuisine with 15+ years of experience.</p>
+      </div>
+
+      <!-- Member 2 -->
+      <div class="team-card bg-white rounded-2xl shadow-lg p-6 text-center transform transition-all duration-500 animate-card-slide" style="animation-delay: 0.2s;">
+        <div class="relative mx-auto mb-4 w-32 h-32">
+          <div class="absolute inset-0 bg-kashmir-red/20 rounded-full animate-pulse" style="animation-delay: 0.5s;"></div>
+          <img src="{{ url_for('static', filename='images/chef3girl.jpg') }}" alt="Master Chef"
+               class="w-32 h-32 object-cover rounded-full border-4 border-kashmir-cream relative z-10 team-image">
+        </div>
+        <h3 class="text-xl font-semibold text-kashmir-dark mb-1 team-name">Sara Malik</h3>
+        <p class="text-kashmir-saffron font-medium mb-3 team-role">Master Chef</p>
+        <p class="text-kashmir-dark text-sm team-desc">Expert in Kashmiri street food and modern fusion dishes.</p>
+      </div>
+
+      <!-- Member 3 -->
+      <div class="team-card bg-white rounded-2xl shadow-lg p-6 text-center transform transition-all duration-500 animate-card-slide" style="animation-delay: 0.4s;">
+        <div class="relative mx-auto mb-4 w-32 h-32">
+          <div class="absolute inset-0 bg-kashmir-green/20 rounded-full animate-pulse" style="animation-delay: 1s;"></div>
+          <img src="{{ url_for('static', filename='images/chef2boy.jpg') }}" alt="Spice Master"
+               class="w-32 h-32 object-cover rounded-full border-4 border-kashmir-cream relative z-10 team-image">
+        </div>
+        <h3 class="text-xl font-semibold text-kashmir-dark mb-1 team-name">Imran Qureshi</h3>
+        <p class="text-kashmir-saffron font-medium mb-3 team-role">Spice Master</p>
+        <p class="text-kashmir-dark text-sm team-desc">Creates perfect spice blends for authentic Kashmiri flavors.</p>
+      </div>
+
+      <!-- Member 4 -->
+      <div class="team-card bg-white rounded-2xl shadow-lg p-6 text-center transform transition-all duration-500 animate-card-slide" style="animation-delay: 0.6s;">
+        <div class="relative mx-auto mb-4 w-32 h-32">
+          <div class="absolute inset-0 bg-kashmir-saffron/20 rounded-full animate-pulse" style="animation-delay: 1.5s;"></div>
+          <img src="{{ url_for('static', filename='images/chef4girll.jpg') }}" alt="Pastry Chef"
+               class="w-32 h-32 object-cover rounded-full border-4 border-kashmir-cream relative z-10 team-image">
+        </div>
+        <h3 class="text-xl font-semibold text-kashmir-dark mb-1 team-name">Fatima Ahmed</h3>
+        <p class="text-kashmir-saffron font-medium mb-3 team-role">Pastry Chef</p>
+        <p class="text-kashmir-dark text-sm team-desc">Specializes in traditional Kashmiri desserts and baked goods.</p>
+      </div>
+
+    </div>
+
+    <!-- Decorative Elements -->
+    <div class="absolute top-10 left-10 text-4xl text-kashmir-saffron/30 animate-float" style="animation-duration: 8s;">🍛</div>
+    <div class="absolute bottom-20 right-12 text-4xl text-kashmir-red/30 animate-float" style="animation-duration: 7s; animation-delay: 1s;">🍚</div>
+    <div class="absolute top-1/3 right-20 text-3xl text-kashmir-green/30 animate-spin-slow">🌿</div>
+  </div>
+</section>
+
+<style>
+  /* Custom animations */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes float {
+    0% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-15px);
+    }
+    100% {
+      transform: translateY(0px);
+    }
+  }
+
+  @keyframes floatIcon {
+    0% {
+      transform: translateY(0px) rotate(0deg);
+    }
+    50% {
+      transform: translateY(-8px) rotate(5deg);
+    }
+    100% {
+      transform: translateY(0px) rotate(0deg);
+    }
+  }
+
+  @keyframes cardSlide {
+    from {
+      opacity: 0;
+      transform: translateY(50px) scale(0.9);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  @keyframes cardHover {
+    0% {
+      transform: translateY(0) scale(1);
+    }
+    100% {
+      transform: translateY(-10px) scale(1.05);
+    }
+  }
+
+  @keyframes lineExpand {
+    from {
+      transform: scaleX(0);
+    }
+    to {
+      transform: scaleX(1);
+    }
+  }
+
+  @keyframes spinSlow {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes imageHover {
+    0% {
+      transform: scale(1);
+    }
+    100% {
+      transform: scale(1.1);
+    }
+  }
+
+  @keyframes textGlow {
+    0% {
+      text-shadow: 0 0 5px rgba(217, 108, 43, 0.5);
+    }
+    50% {
+      text-shadow: 0 0 15px rgba(217, 108, 43, 0.8);
+    }
+    100% {
+      text-shadow: 0 0 5px rgba(217, 108, 43, 0.5);
+    }
+  }
+
+  .animate-title {
+    opacity: 0;
+    animation: fadeIn 1s forwards;
+    animation-delay: 0.3s;
+  }
+
+  .animate-float-icon {
+    animation: floatIcon 3s ease-in-out infinite;
+  }
+
+  .animate-fade-in {
+    opacity: 0;
+    animation: fadeIn 1s forwards;
+    animation-delay: 0.6s;
+  }
+
+  .animate-line-expand {
+    transform-origin: center;
+    animation: lineExpand 1s forwards;
+    animation-delay: 0.9s;
+  }
+
+  .animate-card-slide {
+    opacity: 0;
+    animation: cardSlide 1s forwards;
+  }
+
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .animate-spin-slow {
+    animation: spinSlow 15s linear infinite;
+  }
+
+  /* Team card hover effects */
+  .team-card {
+    transition: all 0.5s ease;
+    cursor: pointer;
+  }
+
+  .team-card:hover {
+    animation: cardHover 0.5s forwards;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2) !important;
+  }
+
+  .team-image {
+    transition: transform 0.5s ease;
+  }
+
+  .team-card:hover .team-image {
+    animation: imageHover 0.5s forwards;
+  }
+
+  .team-name {
+    transition: all 0.5s ease;
+  }
+
+  .team-card:hover .team-name {
+    animation: textGlow 2s infinite;
+    color: #9D2C2B;
+  }
+
+  .team-role {
+    transition: all 0.5s ease;
+  }
+
+  .team-card:hover .team-role {
+    transform: scale(1.1);
+  }
+
+  .team-desc {
+    transition: all 0.5s ease;
+  }
+
+  .team-card:hover .team-desc {
+    opacity: 0.9;
+  }
+
+  /* Kashmiri color variables */
+  .bg-kashmir-light {
+    background-color: #F8F4E9;
+  }
+
+  .text-kashmir-dark {
+    color: #2C1810;
+  }
+
+  .text-kashmir-red {
+    color: #9D2C2B;
+  }
+
+  .text-kashmir-saffron {
+    color: #D96C2B;
+  }
+
+  .text-kashmir-green {
+    color: #4E7D36;
+  }
+
+  .border-kashmir-cream {
+    border-color: #F8F4E9;
+  }
+
+  .bg-kashmir-saffron\/20 {
+    background-color: rgba(217, 108, 43, 0.2);
+  }
+
+  .bg-kashmir-red\/20 {
+    background-color: rgba(157, 44, 43, 0.2);
+  }
+
+  .bg-kashmir-green\/20 {
+    background-color: rgba(78, 125, 54, 0.2);
+  }
+</style>
+
+<script>
+  // Animation trigger when section comes into view
+  document.addEventListener('DOMContentLoaded', function() {
+    const teamSection = document.querySelector('.bg-kashmir-light');
+    const teamCards = document.querySelectorAll('.team-card');
+    const animatedElements = teamSection.querySelectorAll('[class*="animate-"]');
+
+    // Initialize all animations as paused
+    animatedElements.forEach(el => {
+      el.style.animationPlayState = 'paused';
+    });
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          // Play all animations
+          animatedElements.forEach(el => {
+            el.style.animationPlayState = 'running';
+          });
+
+          // Add hover event listeners to cards
+          teamCards.forEach(card => {
+            card.addEventListener('mouseenter', () => {
+              card.style.transform = 'translateY(-10px) scale(1.05)';
+            });
+
+            card.addEventListener('mouseleave', () => {
+              card.style.transform = 'translateY(0) scale(1)';
+            });
+          });
+        } else {
+          // Pause all animations when not in view
+          animatedElements.forEach(el => {
+            el.style.animationPlayState = 'paused';
+          });
+        }
+      });
+    }, { threshold: 0.3 });
+
+    observer.observe(teamSection);
+  });
+</script>
+
+
+
+{% endblock %}

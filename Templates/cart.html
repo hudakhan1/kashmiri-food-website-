@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Kashmiri Food - Your Cart</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #F8F4E9 0%, #F0E6D6 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .cart-container {
+      background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.98) 100%);
+      border-radius: 20px;
+      box-shadow: 0 15px 40px rgba(44, 24, 16, 0.15),
+                  inset 0 1px 0 rgba(255,255,255,0.2);
+      padding: 30px;
+      width: 100%;
+      max-width: 600px;
+      border: 1px solid rgba(157, 44, 43, 0.1);
+      transform: translateY(20px);
+      opacity: 0;
+      animation: slideUp 0.6s ease-out forwards;
+    }
+
+    .cart-title {
+      font-family: 'Playfair Display', serif;
+      background: linear-gradient(135deg, #9D2C2B, #D96C2B);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: 700;
+      font-size: 2.2rem;
+      margin-bottom: 25px;
+      text-align: center;
+      position: relative;
+      padding-bottom: 15px;
+    }
+
+    .cart-title::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 3px;
+      background: linear-gradient(90deg, #9D2C2B, #D96C2B);
+      border-radius: 3px;
+    }
+
+    .cart-item {
+      background: rgba(248, 244, 233, 0.5);
+      border-radius: 15px;
+      padding: 18px;
+      margin-bottom: 15px;
+      border: 1px solid rgba(157, 44, 43, 0.1);
+      transform: translateX(-20px);
+      opacity: 0;
+      animation: slideIn 0.5s ease-out forwards;
+      transition: all 0.3s ease;
+    }
+
+    .cart-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(157, 44, 43, 0.1);
+    }
+
+    .item-title {
+      font-weight: 600;
+      color: #2C1810;
+      font-size: 1.1rem;
+    }
+
+    .item-quantity {
+      color: #9D2C2B;
+      font-weight: 500;
+    }
+
+    .item-price {
+      font-weight: 700;
+      color: #4E7D36;
+      font-size: 1.1rem;
+    }
+
+    .delete-btn {
+      background: rgba(157, 44, 43, 0.1);
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      color: #9D2C2B;
+    }
+
+    .delete-btn:hover {
+      background: rgba(157, 44, 43, 0.2);
+      transform: scale(1.1);
+    }
+
+    .subtotal {
+      background: linear-gradient(135deg, #9D2C2B, #D96C2B);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: 700;
+      font-size: 1.4rem;
+    }
+
+    .payment-btn {
+      background: linear-gradient(135deg, #9D2C2B, #D96C2B);
+      color: white;
+      padding: 14px 30px;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      transition: all 0.4s ease;
+      box-shadow: 0 8px 25px rgba(157, 44, 43, 0.25);
+      display: inline-block;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .payment-btn:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 35px rgba(157, 44, 43, 0.4);
+    }
+
+    .payment-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: 0.5s;
+    }
+
+    .payment-btn:hover::before {
+      left: 100%;
+    }
+
+    .empty-cart {
+      text-align: center;
+      color: #2C1810;
+      font-size: 1.1rem;
+      padding: 40px 0;
+      opacity: 0;
+      animation: fadeIn 1s ease-out forwards;
+      animation-delay: 0.3s;
+    }
+
+    .empty-cart-icon {
+      font-size: 4rem;
+      margin-bottom: 20px;
+      background: linear-gradient(135deg, #9D2C2B, #D96C2B);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    @keyframes slideUp {
+      from {
+        transform: translateY(20px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateX(-20px);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    .cart-item:nth-child(1) { animation-delay: 0.1s; }
+    .cart-item:nth-child(2) { animation-delay: 0.2s; }
+    .cart-item:nth-child(3) { animation-delay: 0.3s; }
+    .cart-item:nth-child(4) { animation-delay: 0.4s; }
+    .cart-item:nth-child(5) { animation-delay: 0.5s; }
+  </style>
+</head>
+<body>
+  <div class="cart-container">
+    <h1 class="cart-title">
+      <i class="fas fa-shopping-basket mr-2"></i>Your Kashmiri Food Cart
+    </h1>
+
+    {% if cart %}
+      <ul>
+        {% for id, item in cart.items() %}
+          <li class="cart-item">
+            <div class="flex justify-between items-center">
+              <div>
+                <span class="item-title">{{ item.title }}</span>
+                <span class="item-quantity ml-2">(x{{ item.quantity }})</span>
+              </div>
+              <div class="flex items-center space-x-4">
+                <span class="item-price">Rs. {{ item.price * item.quantity }}</span>
+                <!-- Delete button -->
+                <form method="POST" action="{{ url_for('remove_from_cart', item_id=id) }}">
+                  <button type="submit" class="delete-btn">
+                    <i class="fas fa-trash-alt"></i>
+                  </button>
+                </form>
+              </div>
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+
+      <!-- Subtotal Section -->
+      <div class="mt-8 pt-6 border-t border-gray-200 flex justify-between items-center text-xl font-semibold">
+        <span>Subtotal:</span>
+        <span class="subtotal">Rs. {{ subtotal }}</span>
+      </div>
+
+      <!-- Proceed to Payment Button -->
+      <div class="mt-8 text-center">
+        <a href="{{ url_for('payment') }}" class="payment-btn">
+          <i class="fas fa-credit-card mr-2"></i>Proceed to Payment
+        </a>
+      </div>
+    {% else %}
+      <div class="empty-cart">
+        <div class="empty-cart-icon">
+          <i class="fas fa-shopping-basket"></i>
+        </div>
+        <p>Your cart is empty. Explore our delicious Kashmiri dishes!</p>
+        <a href="{{ url_for('menu') }}" class="inline-block mt-6 payment-btn">
+          <i class="fas fa-utensils mr-2"></i>Browse Menu
+        </a>
+      </div>
+    {% endif %}
+  </div>
+
+  <script>
+    // Add some interactive animations
+    document.addEventListener('DOMContentLoaded', function() {
+      const cartItems = document.querySelectorAll('.cart-item');
+      const deleteButtons = document.querySelectorAll('.delete-btn');
+
+      // Add click animation to delete buttons
+      deleteButtons.forEach(btn => {
+        btn.addEventListener('click', function(e) {
+          e.currentTarget.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+        });
+      });
+
+      // Add hover effects to cart items
+      cartItems.forEach(item => {
+        item.addEventListener('mouseenter', function() {
+          this.style.transform = 'translateY(-5px)';
+        });
+
+        item.addEventListener('mouseleave', function() {
+          this.style.transform = 'translateY(0)';
+        });
+      });
+    });
+  </script>
+</body>
+</html>

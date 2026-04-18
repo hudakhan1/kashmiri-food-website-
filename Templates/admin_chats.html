@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Chats - Kashmiri Food</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'kashmir-saffron': '#D96C2B',
+            'kashmir-red': '#9D2C2B',
+            'kashmir-green': '#4E7D36',
+            'kashmir-dark': '#2C1810',
+            'kashmir-light': '#F8F4E9',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    .animate-fade-in {
+      animation: fadeIn 0.6s ease-out forwards;
+    }
+
+    .animate-pulse-slow {
+      animation: pulse 2s infinite;
+    }
+
+    .chat-card {
+      transition: all 0.3s ease;
+    }
+
+    .chat-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    /* ✅ Fix horizontal scroll issue */
+    body {
+      overflow-x: hidden;
+    }
+    .container {
+      max-width: 100%;
+      overflow-x: hidden;
+    }
+  </style>
+</head>
+<body class="bg-kashmir-light min-h-screen">
+  <!-- Header with Dashboard Button -->
+  <div class="bg-kashmir-red text-white p-4 md:p-5 shadow-lg">
+    <div class="container mx-auto flex justify-between items-center">
+      <h1 class="text-xl md:text-2xl font-bold flex items-center">
+        <i class="fas fa-comments mr-3"></i>
+        Customer Support Chats
+      </h1>
+      <a href="/admin_dashboard" class="bg-white text-kashmir-red px-4 py-2 rounded-lg font-medium hover:bg-kashmir-light hover:scale-105 transition-all duration-300 flex items-center">
+        <i class="fas fa-tachometer-alt mr-2"></i>
+        Dashboard
+      </a>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="container mx-auto p-4 md:p-6">
+    <!-- Chat List -->
+    <h2 class="text-xl font-bold mb-4 text-kashmir-dark animate-fade-in" style="animation-delay: 0.8s;">
+      <i class="fas fa-users mr-2"></i>All User Chats
+    </h2>
+
+    <div class="space-y-4">
+      {% for chat in chat_list %}
+        <div class="p-4 md:p-5 border rounded-xl bg-white shadow-sm chat-card animate-fade-in" style="animation-delay: {{ loop.index * 0.1 }}s;">
+          <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+            <div class="flex-1">
+              <div class="flex items-center mb-2">
+                <div class="w-10 h-10 bg-kashmir-saffron rounded-full flex items-center justify-center text-white mr-3">
+                  <i class="fas fa-user"></i>
+                </div>
+                <div>
+                  <p class="font-semibold text-kashmir-dark">{{ chat.name }}</p>
+                  <p class="text-sm text-kashmir-red">{{ chat.email }}</p>
+                </div>
+              </div>
+              <p class="text-sm text-gray-600 mt-2">
+                <i class="far fa-comment-dots mr-1"></i>
+                Last message: {{ chat.last_msg }}
+              </p>
+            </div>
+
+            <div class="flex space-x-2">
+              <a href="{{ url_for('chat_room', uid=chat.uid) }}"
+                 class="bg-kashmir-saffron text-white px-4 py-2 rounded-lg font-medium hover:bg-kashmir-red transition-all duration-300 flex items-center animate-pulse-slow">
+                <i class="fas fa-comment-dots mr-2"></i>
+                Open Chat
+              </a>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+
+    <!-- Empty State -->
+    {% if chat_list|length == 0 %}
+      <div class="text-center py-12 animate-fade-in">
+        <i class="fas fa-comments text-4xl text-gray-300 mb-4"></i>
+        <h3 class="text-xl font-medium text-gray-500">No chats yet</h3>
+        <p class="text-gray-400">Customer chats will appear here when they start conversations.</p>
+      </div>
+    {% endif %}
+  </div>
+</body>
+</html>

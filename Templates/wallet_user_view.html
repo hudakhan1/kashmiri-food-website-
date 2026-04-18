@@ -1,0 +1,175 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container mx-auto p-4 md:p-6 lg:p-8 max-w-6xl">
+  <!-- Header -->
+  <!-- Back to Home Button -->
+
+  <div class="text-center mb-8 animate-fade-in">
+    <div class="inline-block bg-kashmir-red/10 p-3 rounded-full mb-4">
+      <i class="fas fa-wallet text-kashmir-red text-3xl animate-float"></i>
+    </div>
+    <h1 class="text-3xl md:text-4xl font-display font-bold text-kashmir-red">My Food Wallet</h1>
+    <p class="text-kashmir-dark mt-2">Manage your Kashmiri Food transactions</p>
+  </div>
+
+  <!-- Total Balance -->
+  <div class="bg-gradient-to-r from-kashmir-red to-kashmir-saffron text-white p-6 rounded-2xl shadow-lg mb-8 text-center animate-fade-in" style="animation-delay: 0.2s;">
+    <div class="flex justify-center items-center mb-2">
+      <i class="fas fa-coins text-2xl mr-3"></i>
+      <h2 class="text-2xl md:text-3xl font-bold">Total Balance</h2>
+    </div>
+    <p class="text-3xl md:text-4xl font-bold mt-2 animate-pulse-gentle">{{ total_balance }}</p>
+    <p class="text-sm opacity-80 mt-2">Available for your next delicious order</p>
+  </div>
+
+  <!-- Approved Wallets -->
+  <div class="mb-10 animate-fade-in" style="animation-delay: 0.3s;">
+    <div class="flex items-center mb-4">
+      <div class="bg-green-100 p-2 rounded-full mr-3">
+        <i class="fas fa-check-circle text-green-600 text-xl"></i>
+      </div>
+      <h2 class="text-xl md:text-2xl font-display font-bold text-green-700">✅ Approved Transactions</h2>
+    </div>
+
+    {% if approved_wallets %}
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        {% for wallet in approved_wallets %}
+          <div class="wallet-card bg-white rounded-xl shadow-md p-5 border-l-4 border-green-500">
+            <div class="flex justify-between items-start mb-3">
+              <div>
+                <p class="text-lg font-semibold text-kashmir-dark">{{ wallet.amount }}</p>
+                <p class="text-sm text-green-600 font-medium">Approved: {{ wallet.approved_amount }}</p>
+              </div>
+              <div class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">
+                <i class="fas fa-check mr-1"></i> Approved
+              </div>
+            </div>
+
+            <div class="space-y-2 text-sm">
+              <p class="flex items-center">
+                <i class="fas fa-id-card text-kashmir-saffron mr-2"></i>
+                <span class="font-medium">CNIC:</span> {{ wallet.cnic }}
+              </p>
+              <p class="flex items-center">
+                <i class="far fa-calendar text-kashmir-saffron mr-2"></i>
+                <span class="font-medium">Date:</span> {{ wallet.datetime }}
+              </p>
+            </div>
+
+            {% if wallet.image %}
+              <div class="mt-4">
+                <img src="{{ url_for('static', filename='uploads/' ~ wallet.image) }}"
+                     class="w-full h-40 object-cover rounded-lg shadow-md">
+              </div>
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="bg-white rounded-xl shadow-sm p-6 text-center">
+        <i class="fas fa-receipt text-4xl text-gray-300 mb-3"></i>
+        <p class="text-gray-500">No approved transactions yet.</p>
+      </div>
+    {% endif %}
+  </div>
+
+  <!-- Pending Wallets -->
+  <div class="mb-10 animate-fade-in" style="animation-delay: 0.4s;">
+    <div class="flex items-center mb-4">
+      <div class="bg-yellow-100 p-2 rounded-full mr-3">
+        <i class="fas fa-clock text-yellow-600 text-xl"></i>
+      </div>
+      <h2 class="text-xl md:text-2xl font-display font-bold text-yellow-700">⏳ Pending Transactions</h2>
+    </div>
+
+    {% if pending_wallets %}
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        {% for wallet in pending_wallets %}
+          <div class="wallet-card bg-white rounded-xl shadow-md p-5 border-l-4 border-yellow-500">
+            <div class="flex justify-between items-start mb-3">
+              <p class="text-lg font-semibold text-kashmir-dark">{{ wallet.amount }}</p>
+              <div class="bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded-full">
+                <i class="fas fa-clock mr-1"></i> Pending
+              </div>
+            </div>
+
+            <div class="space-y-2 text-sm">
+              <p class="flex items-center">
+                <i class="fas fa-id-card text-kashmir-saffron mr-2"></i>
+                <span class="font-medium">CNIC:</span> {{ wallet.cnic }}
+              </p>
+              <p class="flex items-center">
+                <i class="far fa-calendar text-kashmir-saffron mr-2"></i>
+                <span class="font-medium">Date:</span> {{ wallet.datetime }}
+              </p>
+            </div>
+
+            {% if wallet.image %}
+              <div class="mt-4">
+                <img src="{{ url_for('static', filename='uploads/' ~ wallet.image) }}"
+                     class="w-full h-40 object-cover rounded-lg shadow-md">
+              </div>
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="bg-white rounded-xl shadow-sm p-6 text-center">
+        <i class="fas fa-hourglass-half text-4xl text-gray-300 mb-3"></i>
+        <p class="text-gray-500">No pending transactions.</p>
+      </div>
+    {% endif %}
+  </div>
+
+  <!-- Rejected Wallets -->
+  <div class="animate-fade-in" style="animation-delay: 0.5s;">
+    <div class="flex items-center mb-4">
+      <div class="bg-red-100 p-2 rounded-full mr-3">
+        <i class="fas fa-times-circle text-red-600 text-xl"></i>
+      </div>
+      <h2 class="text-xl md:text-2xl font-display font-bold text-red-700">❌ Rejected Transactions</h2>
+    </div>
+
+    {% if rejected_wallets %}
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        {% for wallet in rejected_wallets %}
+          <div class="wallet-card bg-white rounded-xl shadow-md p-5 border-l-4 border-red-500">
+            <div class="flex justify-between items-start mb-3">
+              <p class="text-lg font-semibold text-kashmir-dark">{{ wallet.amount }}</p>
+              <div class="bg-red-100 text-red-800 text-xs px-2 py-1 rounded-full">
+                <i class="fas fa-times mr-1"></i> Rejected
+              </div>
+            </div>
+
+            <div class="space-y-2 text-sm">
+              <p class="flex items-center">
+                <i class="fas fa-id-card text-kashmir-saffron mr-2"></i>
+                <span class="font-medium">CNIC:</span> {{ wallet.cnic }}
+              </p>
+              <p class="flex items-center">
+                <i class="far fa-calendar text-kashmir-saffron mr-2"></i>
+                <span class="font-medium">Date:</span> {{ wallet.datetime }}
+              </p>
+            </div>
+
+            {% if wallet.image %}
+              <div class="mt-4">
+                <img src="{{ url_for('static', filename='uploads/' ~ wallet.image) }}"
+                     class="w-full h-40 object-cover rounded-lg shadow-md">
+              </div>
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="bg-white rounded-xl shadow-sm p-6 text-center">
+        <i class="fas fa-ban text-4xl text-gray-300 mb-3"></i>
+        <p class="text-gray-500">No rejected transactions.</p>
+      </div>
+    {% endif %}
+  </div>
+
+</div>
+
+{% endblock %}

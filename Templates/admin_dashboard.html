@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kashmiri Food - Admin Panel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --kashmir-red: #9D2C2B;
+            --kashmir-saffron: #D96C2B;
+            --kashmir-cream: #F8F4E9;
+            --kashmir-dark: #2C1810;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #F8F4E9;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar {
+            background: linear-gradient(180deg, var(--kashmir-red) 0%, #7A1F1E 100%);
+            color: white;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            z-index: 40;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+        }
+
+        .nav-item {
+            transition: all 0.3s ease;
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-item::before {
+            content: '';
+            position: absolute;
+            left: -100%;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: all 0.5s ease;
+        }
+
+        .nav-item:hover::before {
+            left: 100%;
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(5px);
+        }
+
+        .nav-item.active {
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar {
+            background: linear-gradient(90deg, var(--kashmir-red) 0%, var(--kashmir-saffron) 100%);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            z-index: 30;
+            position: relative;
+        }
+
+        .dashboard-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+        }
+
+        .btn-kashmir {
+            background: linear-gradient(135deg, var(--kashmir-red), var(--kashmir-saffron));
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(157, 44, 43, 0.25);
+        }
+
+        .btn-kashmir:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(157, 44, 43, 0.35);
+        }
+
+        .btn-logout {
+            background: linear-gradient(135deg, #DC2626, #B91C1C);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(220, 38, 38, 0.25);
+        }
+
+        .btn-logout:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(220, 38, 38, 0.35);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.6s forwards;
+        }
+
+        .animate-slide-in {
+            animation: slideInLeft 0.6s forwards;
+        }
+
+        .animate-pulse {
+            animation: pulse 2s infinite;
+        }
+
+        .animate-float {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .delay-100 {
+            animation-delay: 0.1s;
+        }
+
+        .delay-200 {
+            animation-delay: 0.2s;
+        }
+
+        .delay-300 {
+            animation-delay: 0.3s;
+        }
+
+        .logo-text {
+            font-family: 'Playfair Display', serif;
+            background: linear-gradient(135deg, #FFFFFF, #F8F4E9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, rgba(157, 44, 43, 0.1), rgba(217, 108, 43, 0.1));
+            border: 1px solid rgba(157, 44, 43, 0.2);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(157, 44, 43, 0.15);
+        }
+
+        /* Main content adjustment */
+        .main-content {
+            margin-left: 16rem; /* 64 * 0.25 = 16rem */
+            width: calc(100% - 16rem);
+            transition: all 0.3s ease;
+        }
+
+        /* Mobile menu button */
+        .mobile-menu-button {
+            display: none;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 1024px) {
+            .sidebar {
+                position: fixed;
+                left: -100%;
+                height: 100vh;
+                width: 280px;
+                transition: left 0.3s ease;
+                z-index: 50;
+            }
+
+            .sidebar.open {
+                left: 0;
+            }
+
+            .mobile-menu-button {
+                display: block;
+            }
+
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+            }
+
+            .overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 40;
+            }
+
+            .overlay.active {
+                display: block;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                padding: 1rem;
+            }
+
+            .navbar > div {
+                margin-top: 1rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .complain-box {
+                width: 300px;
+                right: 0;
+            }
+
+            .btn-responsive {
+                padding: 0.5rem 1rem;
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .complain-box {
+                width: 280px;
+                right: -20px;
+            }
+
+            .chart-container {
+                height: 300px;
+            }
+
+            .navbar-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+
+        /* Chart animations */
+        .chart-container {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .chart-container.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Review Chats Button */
+        .review-chats-btn {
+            background: linear-gradient(135deg, #2563EB, #1D4ED8);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.25);
+        }
+
+        .review-chats-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.35);
+        }
+
+        /* Complaints Button */
+        .complaints-btn {
+            background: linear-gradient(135deg, #8B5CF6, #7C3AED);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.25);
+        }
+
+        .complaints-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(139, 92, 246, 0.35);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+
+    <!-- Navbar -->
+    <nav class="navbar text-white px-4 md:px-6 py-4 flex justify-between items-center navbar-content">
+        <div class="flex items-center">
+            <button class="mobile-menu-button mr-4 text-white focus:outline-none">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
+            <h1 class="text-xl md:text-2xl font-bold logo-text">Kashmiri Food </h1>
+        </div>
+        <div class="flex items-center space-x-2 md:space-x-4 flex-wrap gap-2">
+            <a href="{{ url_for('home') }}" class="px-3 py-2 md:px-4 md:py-2 rounded-lg hover:bg-white/10 transition animate-fade-in btn-responsive">
+                <i class="fas fa-home mr-2"></i>Home
+            </a>
+
+            <!-- Complaints Button -->
+            <div class="relative inline-block animate-fade-in delay-100">
+                <button id="complainBtn" class="complaints-btn text-white px-3 py-2 md:px-4 md:py-2 rounded-lg relative btn-responsive">
+                    <i class="fas fa-comments mr-2"></i>Complaints
+                    <!-- Badge -->
+                    <span id="complainCount"
+                          class="absolute -top-2 -right-2 bg-red-600 text-white text-xs px-2 py-0.5 rounded-full animate-pulse hidden">
+                        0
+                    </span>
+                </button>
+
+                <!-- Dropdown / modal for complaints -->
+                <div id="complainBox"
+                     class="hidden absolute top-full mt-2 right-0 w-80 md:w-96 max-h-80 overflow-y-auto bg-white border border-gray-200 shadow-xl rounded-lg p-3 z-50 complain-box">
+                    <h3 class="font-semibold text-gray-700 mb-2 border-b pb-2 flex items-center">
+                        <i class="fas fa-exclamation-circle mr-2 text-blue-500"></i>New Complaints
+                    </h3>
+                    <ul id="complainList" class="space-y-2 text-sm text-gray-800"></ul>
+                </div>
+            </div>
+
+            <!-- Review Chats Button -->
+            <a href="/admin_chats" class="review-chats-btn text-white px-3 py-2 md:px-4 md:py-2 rounded-lg relative animate-fade-in delay-200 btn-responsive">
+                <i class="fas fa-comment-dots mr-2"></i>Review Chats
+                {% if unseen_count > 0 %}
+                <span class="absolute -top-2 -right-2 bg-red-600 text-white text-xs px-2 py-1 rounded-full">
+                    {{ unseen_count }}
+                </span>
+                {% endif %}
+            </a>
+
+            <a href="{{ url_for('logout') }}" class="btn-logout px-3 py-2 md:px-4 md:py-2 rounded-lg text-white animate-fade-in delay-300 btn-responsive">
+                <i class="fas fa-sign-out-alt mr-2"></i>Logout
+            </a>
+        </div>
+    </nav>
+
+    <!-- Overlay for mobile -->
+    <div class="overlay" id="overlay"></div>
+
+    <div class="flex">
+
+        <!-- Sidebar -->
+        <aside class="sidebar w-64">
+            <div class="p-6 border-b border-white/10">
+                <h2 class="text-xl font-semibold flex items-center animate-slide-in">
+                    <i class="fas fa-user-shield mr-3"></i>Admin Panel
+                </h2>
+            </div>
+            <ul class="p-4 space-y-2">
+                <li class="nav-item active animate-slide-in delay-100">
+                    <a href="{{ url_for('admin_dashboard') }}" class="block px-4 py-3 rounded flex items-center">
+                        <i class="fas fa-tachometer-alt mr-3"></i>Dashboard
+                    </a>
+                </li>
+                <li class="nav-item animate-slide-in delay-150">
+                    <a href="{{ url_for('add_menu') }}" class="block px-4 py-3 rounded flex items-center">
+                        <i class="fas fa-utensils mr-3"></i>Add Menu
+                    </a>
+                </li>
+                <li class="nav-item animate-slide-in delay-200">
+                    <a href="{{ url_for('add_announcement') }}" class="block px-4 py-3 rounded flex items-center">
+                        <i class="fas fa-bullhorn mr-3"></i>Add Announcement
+                    </a>
+                </li>
+                <li class="nav-item animate-slide-in delay-250">
+                    <a href="{{ url_for('edit_admin') }}" class="block px-4 py-3 rounded flex items-center">
+                        <i class="fas fa-user-cog mr-3"></i>Edit Admin
+                    </a>
+                </li>
+                <li class="nav-item animate-slide-in delay-300">
+                    <a href="{{ url_for('view_users') }}" class="block px-4 py-3 rounded flex items-center">
+                        <i class="fas fa-users mr-3"></i>View Users
+                    </a>
+                </li>
+                <li class="nav-item animate-slide-in delay-350">
+                    <a href="{{ url_for('edit_menu') }}" class="block px-4 py-3 rounded flex items-center">
+                        <i class="fas fa-edit mr-3"></i>Edit Menu
+                    </a>
+                </li>
+                <li class="nav-item animate-slide-in delay-400">
+                    <a href="{{ url_for('delete_menu') }}" class="block px-4 py-3 rounded flex items-center">
+                        <i class="fas fa-trash-alt mr-3"></i>Delete Menu
+                    </a>
+                </li>
+                <!-- Wallet View Button -->
+                <li class="nav-item animate-slide-in delay-450">
+                    <a href="{{ url_for('wallet_view') }}" class="block px-4 py-3 rounded flex items-center">
+                        <i class="fas fa-wallet mr-3"></i>Wallet View
+                    </a>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-4 md:p-6 lg:p-8 main-content">
+            <div class="animate-fade-in">
+                <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mb-2 flex items-center">
+                    <i class="fas fa-chart-line mr-3 text-kashmir-saffron"></i>Admin Dashboard
+                </h2>
+                <p class="text-gray-600 mb-6 md:mb-8 flex items-center">
+                    <i class="fas fa-info-circle mr-2 text-kashmir-red"></i>Welcome to Kashmiri Food Administration Panel
+                </p>
+            </div>
+
+            <!-- Stats Cards Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-6 md:mb-8 stats-grid">
+                <!-- Total Users -->
+                <div class="stat-card p-4 md:p-6 animate-fade-in delay-100">
+                    <div class="flex items-center">
+                        <div class="p-3 rounded-full bg-red-100 text-red-600 mr-4 animate-pulse">
+                            <i class="fas fa-users text-xl"></i>
+                        </div>
+                        <div>
+                            <p class="text-gray-600">Total Users</p>
+                            <h3 class="text-xl md:text-2xl font-bold text-gray-800">{{ total_users }}</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Menu Items -->
+                <div class="stat-card p-4 md:p-6 animate-fade-in delay-200">
+                    <div class="flex items-center">
+                        <div class="p-3 rounded-full bg-orange-100 text-orange-600 mr-4 animate-pulse" style="animation-delay: 0.5s;">
+                            <i class="fas fa-utensils text-xl"></i>
+                        </div>
+                        <div>
+                            <p class="text-gray-600">Menu Items</p>
+                            <h3 class="text-xl md:text-2xl font-bold text-gray-800">{{ total_menu_items }}</h3>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+            <!-- Charts Section -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
+                <!-- Users Pie Chart -->
+                <div class="stat-card p-4 md:p-6 chart-container">
+                    <h2 class="text-lg md:text-xl font-bold mb-4 flex items-center">
+                        <i class="fas fa-chart-pie mr-2 text-kashmir-red"></i>Total Users
+                    </h2>
+                    <div id="usersPieChart" class="w-full h-64 md:h-80 lg:h-96"></div>
+                </div>
+
+                <!-- Menu Category Chart -->
+                <div class="stat-card p-4 md:p-6 chart-container" style="animation-delay: 0.2s;">
+                    <h2 class="text-lg md:text-xl font-bold mb-4 flex items-center">
+                        <i class="fas fa-chart-bar mr-2 text-kashmir-saffron"></i>Menu Category Breakdown
+                    </h2>
+                    <div id="menuCategoryChart" class="w-full h-64 md:h-80 lg:h-96"></div>
+                </div>
+            </div>
+
+            <!-- Featured Food Chart -->
+            <div class="stat-card p-4 md:p-6 mt-6 md:mt-8 chart-container" style="animation-delay: 0.4s;">
+                <h2 class="text-lg md:text-xl font-bold mb-4 flex items-center">
+                    <i class="fas fa-star mr-2 text-amber-500"></i>Featured Food Distribution
+                </h2>
+                <div id="featuredFoodChart" class="w-full h-64 md:h-80 lg:h-96"></div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script>
+        // Mobile menu toggle
+        document.querySelector('.mobile-menu-button').addEventListener('click', function() {
+            document.querySelector('.sidebar').classList.toggle('open');
+            document.getElementById('overlay').classList.toggle('active');
+        });
+
+        // Close sidebar when clicking outside on mobile
+        document.getElementById('overlay').addEventListener('click', function() {
+            document.querySelector('.sidebar').classList.remove('open');
+            this.classList.remove('active');
+        });
+
+        // Make charts visible when in viewport
+        document.addEventListener('DOMContentLoaded', function() {
+            const chartContainers = document.querySelectorAll('.chart-container');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            chartContainers.forEach(container => {
+                observer.observe(container);
+            });
+        });
+
+        // Complaints functionality
+        async function loadComplains() {
+            const res = await fetch("/get_complains");
+            const data = await res.json();
+
+            const complainList = document.getElementById("complainList");
+            const complainCount = document.getElementById("complainCount");
+
+            complainList.innerHTML = "";
+
+            let unseen = 0;
+            data.complains.forEach(c => {
+                if (!c.seen) {
+                    unseen++;
+                    const li = document.createElement("li");
+                    li.className = "border p-2 rounded bg-gray-50 text-gray-800 hover:bg-gray-100 flex justify-between items-center";
+                    li.innerHTML = `
+                        <div>
+                            <strong class="text-blue-600">${c.user_email}</strong><br>
+                            <span>${c.complain}</span>
+                        </div>
+                        <a href="/review_complain/${c.id}"
+                           class="ml-2 bg-green-600 text-white px-2 py-1 rounded text-xs">Review</a>
+                    `;
+                    complainList.appendChild(li);
+                }
+            });
+
+            complainCount.textContent = unseen;
+            complainCount.style.display = unseen > 0 ? "inline-block" : "none";
+        }
+
+        // Button toggle
+        const complainBtn = document.getElementById("complainBtn");
+        const complainBox = document.getElementById("complainBox");
+
+        complainBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            complainBox.classList.toggle("hidden");
+        });
+
+        document.addEventListener("click", (e) => {
+            if (!complainBox.contains(e.target) && !complainBtn.contains(e.target)) {
+                complainBox.classList.add("hidden");
+            }
+        });
+
+        // Load on page load
+        loadComplains();
+        // Optionally, refresh every 10 sec
+        setInterval(loadComplains, 10000);
+
+        // Charts initialization
+        document.addEventListener("DOMContentLoaded", function () {
+            // Users Pie Chart
+            Highcharts.chart('usersPieChart', {
+                chart: { type: 'pie' },
+                title: { text: 'Total Users' },
+                tooltip: { pointFormat: '<b>{point.y} users</b>' },
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        dataLabels: [{
+                            enabled: true,
+                            format: '{point.name}: {point.y}'
+                        }, {
+                            enabled: true,
+                            distance: -40,
+                            format: '{point.percentage:.1f}%',
+                            style: {
+                                fontSize: '1em',
+                                textOutline: 'none',
+                                opacity: 0.7
+                            }
+                        }]
+                    }
+                },
+                series: [{
+                    name: 'Users',
+                    colorByPoint: true,
+                    data: [
+                        { name: 'Users', y: {{ total_users }} }
+                    ]
+                }]
+            });
+
+            // Menu Category Chart
+            Highcharts.chart('menuCategoryChart', {
+                chart: { type: 'pie' },
+                title: { text: 'Menu Category Distribution' },
+                tooltip: { pointFormat: '<b>{point.y} items</b> ({point.percentage:.1f}%)' },
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        dataLabels: [{
+                            enabled: true,
+                            format: '{point.name}: {point.y}'
+                        }, {
+                            enabled: true,
+                            distance: -40,
+                            format: '{point.percentage:.1f}%',
+                            style: {
+                                fontSize: '1em',
+                                textOutline: 'none',
+                                opacity: 0.7
+                            },
+                            filter: {
+                                operator: '>',
+                                property: 'percentage',
+                                value: 5
+                            }
+                        }]
+                    }
+                },
+                series: [{
+                    name: 'Items',
+                    colorByPoint: true,
+                    data: Object.entries({{ category_counts|tojson }}).map(([cat, count]) => ({
+                        name: cat,
+                        y: count
+                    }))
+                }]
+            });
+
+            // Featured Food Chart
+            const featuredCategory = "{{ featured_category }}";
+            const featuredItems = {{ featured_items|tojson|safe }};
+
+            if (featuredItems.length > 0) {
+                Highcharts.chart('featuredFoodChart', {
+                    chart: { type: 'pie' },
+                    title: { text: 'Featured Food - ' + featuredCategory },
+                    tooltip: { pointFormat: '<b>{point.percentage:.1f}%</b>' },
+                    plotOptions: {
+                        pie: {
+                            allowPointSelect: true,
+                            cursor: 'pointer',
+                            dataLabels: [{
+                                enabled: true,
+                                format: '{point.name}'
+                            }, {
+                                enabled: true,
+                                distance: -40,
+                                format: '{point.percentage:.1f}%',
+                                style: {
+                                    fontSize: '1em',
+                                    textOutline: 'none',
+                                    opacity: 0.7
+                                },
+                                filter: {
+                                    operator: '>',
+                                    property: 'percentage',
+                                    value: 4
+                                }
+                            }]
+                        }
+                    },
+                    series: [{
+                        name: 'Items',
+                        colorByPoint: true,
+                        data: featuredItems.map(item => ({
+                            name: item.title,
+                            y: 1
+                        }))
+                    }]
+                });
+            }
+        });
+    </script>
+</body>
+</html>

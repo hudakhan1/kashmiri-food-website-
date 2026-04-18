@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Complaint Details - Kashmiri Food</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'kashmir-saffron': '#D96C2B',
+            'kashmir-red': '#9D2C2B',
+            'kashmir-green': '#4E7D36',
+            'kashmir-dark': '#2C1810',
+            'kashmir-light': '#F8F4E9',
+          },
+          fontFamily: {
+            'display': ['Playfair Display', 'serif'],
+            'body': ['Poppins', 'sans-serif'],
+          },
+          animation: {
+            'fade-in': 'fadeIn 0.7s ease-out forwards',
+            'slide-up': 'slideUp 0.6s ease-out forwards',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .animate-fade-in {
+      opacity: 0;
+      animation: fadeIn 0.7s ease-out forwards;
+    }
+
+    .animate-slide-up {
+      opacity: 0;
+      animation: slideUp 0.6s ease-out forwards;
+    }
+
+    .complaint-card {
+      transition: all 0.3s ease;
+    }
+
+    .complaint-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    }
+
+    .back-button {
+      transition: all 0.3s ease;
+    }
+
+    .back-button:hover {
+      transform: translateX(-5px);
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.35rem 0.75rem;
+      border-radius: 50px;
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body class="bg-kashmir-light min-h-screen flex items-center justify-center p-4 font-body">
+  <div class="bg-white rounded-2xl shadow-lg w-full max-w-3xl overflow-hidden complaint-card animate-slide-up">
+    <!-- Header -->
+    <div class="border-b border-gray-200 px-6 py-5 flex justify-between items-center bg-gradient-to-r from-kashmir-light to-white">
+      <div>
+        <h2 class="text-2xl font-bold text-kashmir-dark font-display animate-fade-in" style="animation-delay: 0.2s;">
+          <i class="fas fa-headset mr-2 text-kashmir-saffron"></i>Complaint Details
+        </h2>
+        <p class="text-sm text-gray-500 mt-1 animate-fade-in" style="animation-delay: 0.3s;">Kashmiri Food Customer Support</p>
+      </div>
+      <a href="/admin_dashboard" class="back-button text-kashmir-red hover:text-kashmir-saffron font-medium flex items-center">
+        <i class="fas fa-arrow-left mr-2"></i> Back to Dashboard
+      </a>
+    </div>
+
+    <!-- Complaint Info -->
+    <div class="p-6 space-y-6">
+      <!-- User Info Card -->
+      <div class="bg-kashmir-light rounded-xl p-5 border border-kashmir-saffron/20 animate-fade-in" style="animation-delay: 0.4s;">
+        <div class="flex items-center">
+          <div class="bg-kashmir-saffron/10 p-3 rounded-full mr-4">
+            <i class="fas fa-user-circle text-2xl text-kashmir-saffron"></i>
+          </div>
+          <div>
+            <h3 class="text-sm font-medium text-gray-500">Customer</h3>
+            <p class="text-lg font-medium text-kashmir-dark">{{ complain.user_email }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Complaint Content Card -->
+      <div class="bg-white rounded-xl p-5 border border-gray-200 shadow-sm animate-fade-in" style="animation-delay: 0.5s;">
+        <div class="flex items-center mb-4">
+          <div class="bg-kashmir-red/10 p-3 rounded-full mr-4">
+            <i class="fas fa-exclamation-circle text-2xl text-kashmir-red"></i>
+          </div>
+          <div>
+            <h3 class="text-sm font-medium text-gray-500">Complaint Message</h3>
+          </div>
+        </div>
+        <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+          <p class="text-gray-700 leading-relaxed">
+            "{{ complain.complain }}"
+          </p>
+        </div>
+      </div>
+
+
+
+
+
+      </div>
+
+
+
+    <!-- Footer -->
+    <div class="border-t border-gray-200 px-6 py-4 bg-gray-50 text-center text-sm text-gray-500">
+      <p>Kashmiri Food Customer Support • support@kashmirifood.com</p>
+    </div>
+  </div>
+
+  <script>
+    // Simple animation trigger
+    document.addEventListener('DOMContentLoaded', function() {
+      // Elements already have animation classes
+      // Additional interactive effects
+      const buttons = document.querySelectorAll('button');
+      buttons.forEach(button => {
+        button.addEventListener('mouseenter', function() {
+          this.classList.add('transform', 'scale-105');
+        });
+        button.addEventListener('mouseleave', function() {
+          this.classList.remove('transform', 'scale-105');
+        });
+      });
+    });
+  </script>
+</body>
+</html>

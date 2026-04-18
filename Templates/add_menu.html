@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Kashmiri Food - Add Menu</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap');
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #F8F4E9 0%, #F0E6D6 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .form-container {
+      width: 100%;
+      max-width: 600px;
+      background: white;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+      transform: scale(0.95);
+      opacity: 0;
+      animation: formEntrance 0.8s ease-out forwards;
+      position: relative;
+    }
+
+    .back-button {
+      position: absolute;
+      top: 25px;
+      left: 25px;
+      background: rgba(157, 44, 43, 0.1);
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      color: #9D2C2B;
+      z-index: 10;
+      box-shadow: 0 4px 15px rgba(44, 24, 16, 0.1);
+    }
+
+    .back-button:hover {
+      background: rgba(157, 44, 43, 0.2);
+      transform: translateX(-5px);
+      box-shadow: 0 6px 20px rgba(44, 24, 16, 0.15);
+    }
+
+    .form-header {
+      background: linear-gradient(135deg, #9D2C2B 0%, #D96C2B 100%);
+      padding: 2.5rem 2rem;
+      text-align: center;
+      color: white;
+    }
+
+    .form-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .form-subtitle {
+      font-size: 1.1rem;
+      opacity: 0.9;
+    }
+
+    .form-content {
+      padding: 2.5rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.8rem;
+      position: relative;
+    }
+
+    .form-label {
+      display: block;
+      font-weight: 500;
+      color: #2C1810;
+      margin-bottom: 0.8rem;
+      display: flex;
+      align-items: center;
+    }
+
+    .form-icon {
+      margin-right: 0.8rem;
+      color: #9D2C2B;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 1rem 1.2rem;
+      border: 2px solid #E5E7EB;
+      border-radius: 12px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      background: #F8F4E9;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: #9D2C2B;
+      box-shadow: 0 0 0 3px rgba(157, 44, 43, 0.1);
+      transform: translateY(-2px);
+    }
+
+    .file-input-container {
+      position: relative;
+      overflow: hidden;
+      display: inline-block;
+      width: 100%;
+    }
+
+    .file-input {
+      position: absolute;
+      left: 0;
+      top: 0;
+      opacity: 0;
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
+    }
+
+    .file-input-label {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem 1.2rem;
+      background: #F8F4E9;
+      border: 2px dashed #9D2C2B;
+      border-radius: 12px;
+      color: #9D2C2B;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .file-input-label:hover {
+      background: rgba(157, 44, 43, 0.05);
+      transform: translateY(-2px);
+    }
+
+    .submit-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      background: linear-gradient(135deg, #9D2C2B, #D96C2B);
+      color: white;
+      padding: 1.2rem 2rem;
+      border-radius: 50px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.4s ease;
+      box-shadow: 0 5px 15px rgba(157, 44, 43, 0.25);
+      border: none;
+      cursor: pointer;
+      font-size: 1.1rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .submit-button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: 0.5s;
+    }
+
+    .submit-button:hover::before {
+      left: 100%;
+    }
+
+    .submit-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(157, 44, 43, 0.35);
+    }
+
+    .message {
+      padding: 1rem;
+      border-radius: 10px;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      animation: fadeIn 0.5s ease-out;
+    }
+
+    .error-message {
+      background: rgba(239, 68, 68, 0.1);
+      color: #DC2626;
+      border: 1px solid rgba(239, 68, 68, 0.2);
+    }
+
+    .success-message {
+      background: rgba(34, 197, 94, 0.1);
+      color: #16A34A;
+      border: 1px solid rgba(34, 197, 94, 0.2);
+    }
+
+    /* Animations */
+    @keyframes formEntrance {
+      0% {
+        transform: scale(0.95);
+        opacity: 0;
+      }
+      70% {
+        transform: scale(1.02);
+      }
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 640px) {
+      .form-container {
+        margin: 1rem;
+      }
+
+      .form-title {
+        font-size: 2rem;
+      }
+
+      .form-content {
+        padding: 2rem 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <!-- Back Button -->
+    <a href="{{ url_for('admin_dashboard') }}" class="back-button">
+      <i class="fas fa-arrow-left"></i>
+    </a>
+
+    <div class="form-header">
+      <h2 class="form-title">Add Menu Item</h2>
+      <p class="form-subtitle">Create a new delicious Kashmiri dish</p>
+    </div>
+
+    <div class="form-content">
+      {% if error %}
+        <div class="message error-message">
+          <i class="fas fa-exclamation-circle mr-3"></i>
+          {{ error }}
+        </div>
+      {% endif %}
+
+      {% if success %}
+        <div class="message success-message">
+          <i class="fas fa-check-circle mr-3"></i>
+          {{ success }}
+        </div>
+      {% endif %}
+
+      <form method="POST" enctype="multipart/form-data" class="space-y-6">
+        <div class="form-group">
+          <label class="form-label">
+            <i class="fas fa-tag form-icon"></i>Category
+          </label>
+          <input type="text" name="category" class="form-input" placeholder="e.g., Main Course, Appetizers" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">
+            <i class="fas fa-utensils form-icon"></i>Title
+          </label>
+          <input type="text" name="title" class="form-input" placeholder="Dish name" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">
+            <i class="fas fa-tag form-icon"></i>Price
+          </label>
+          <input type="text" name="price" class="form-input" placeholder="e.g., $12.99" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">
+            <i class="fas fa-image form-icon"></i>Food Image
+          </label>
+          <div class="file-input-container">
+            <div class="file-input-label">
+              <i class="fas fa-upload mr-2"></i>
+              Choose an image
+            </div>
+            <input type="file" name="image" accept="image/*" class="file-input" required>
+          </div>
+        </div>
+
+        <button type="submit" class="submit-button">
+          <i class="fas fa-plus-circle mr-2"></i>
+          Add to Menu
+        </button>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

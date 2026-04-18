@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Kashmiri Food - Edit Profile</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --kashmir-red: #9D2C2B;
+      --kashmir-saffron: #D96C2B;
+      --kashmir-green: #4E7D36;
+      --kashmir-dark: #2C1810;
+      --kashmir-light: #F8F4E9;
+    }
+
+    body {
+      background: linear-gradient(135deg, var(--kashmir-light) 0%, #F0E6D6 100%);
+      font-family: 'Poppins', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .back-button {
+      position: absolute;
+      top: 25px;
+      left: 25px;
+      background: rgba(157,44,43,0.1);
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.4s ease;
+      color: #9D2C2B;
+      z-index: 10;
+      box-shadow: 0 4px 15px rgba(44, 24, 16, 0.1);
+    }
+
+    .back-button:hover {
+      background: rgba(157,44,43,0.2);
+      transform: translateX(-5px);
+      box-shadow: 0 6px 20px rgba(44, 24, 16, 0.15);
+    }
+
+    .form-container {
+      background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.98) 100%);
+      border-radius: 20px;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+      border: 1px solid rgba(157, 44, 43, 0.15);
+      padding: 35px;
+      width: 100%;
+      max-width: 450px;
+      position: relative;
+      overflow: hidden;
+      animation: fadeIn 0.8s ease-out;
+    }
+
+    .form-container::before {
+      content: "";
+      position: absolute;
+      left: -25%;
+      top: -35%;
+      width: 180%;
+      height: 140%;
+      background: radial-gradient(circle at 25% 15%, rgba(157,44,43,0.1), transparent 15%),
+                  radial-gradient(circle at 75% 85%, rgba(217,108,43,0.08), transparent 12%);
+      transform: rotate(-15deg);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .kashmir-title {
+      font-family: 'Playfair Display', serif;
+      background: linear-gradient(135deg, var(--kashmir-red), var(--kashmir-saffron));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      position: relative;
+      display: inline-block;
+      margin-bottom: 5px;
+    }
+
+    .kashmir-title::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, var(--kashmir-red), var(--kashmir-saffron));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.6s ease;
+    }
+
+    .form-container:hover .kashmir-title::after {
+      transform: scaleX(1);
+    }
+
+    .form-input {
+      transition: all 0.3s ease;
+      background: rgba(248, 244, 233, 0.5);
+      border: 1px solid rgba(157, 44, 43, 0.2);
+    }
+
+    .form-input:focus {
+      outline: none;
+      box-shadow: 0 8px 25px rgba(157,44,43,0.15), 0 0 0 4px rgba(157,44,43,0.1);
+      border-color: rgba(157,44,43,0.7);
+    }
+
+    .btn-kashmir {
+      background: linear-gradient(135deg, var(--kashmir-red), var(--kashmir-saffron));
+      transition: all 0.4s ease;
+      box-shadow: 0 8px 25px rgba(157,44,43,0.25);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-kashmir:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 35px rgba(157,44,43,0.4);
+    }
+
+    .btn-kashmir::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: 0.5s;
+    }
+
+    .btn-kashmir:hover::before {
+      left: 100%;
+    }
+
+    .input-icon {
+      color: var(--kashmir-red);
+      transition: all 0.3s ease;
+    }
+
+    .input-group:focus-within .input-icon {
+      color: var(--kashmir-saffron);
+      transform: scale(1.1);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .floating {
+      animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-8px); }
+      100% { transform: translateY(0px); }
+    }
+  </style>
+</head>
+<body>
+  <!-- Back Button -->
+  <a href="{{ url_for('admin_dashboard') }}" class="back-button">
+    <i class="fas fa-arrow-left"></i>
+  </a>
+
+  <div class="form-container">
+    <div class="text-center mb-2 floating">
+      <i class="fas fa-user-edit text-4xl" style="background: linear-gradient(135deg, #9D2C2B, #D96C2B); -webkit-background-clip: text; -webkit-text-fill-color: transparent;"></i>
+    </div>
+
+    <h2 class="text-3xl font-bold text-center kashmir-title">Edit Profile</h2>
+    <p class="text-center text-gray-600 mb-8">Update your account information</p>
+
+    <form method="POST">
+      <div class="mb-6 input-group">
+        <label class="block text-sm font-medium text-gray-700 mb-2">
+          <i class="fas fa-envelope input-icon mr-2"></i>Email Address
+        </label>
+        <input type="email" name="email" value="{{ user.email }}"
+               class="form-input w-full rounded-xl py-3 px-5 text-gray-800 focus:ring-2 focus:ring-kashmir-red/30"
+               placeholder="your@email.com" required>
+      </div>
+
+      <div class="mb-6 input-group">
+        <label class="block text-sm font-medium text-gray-700 mb-2">
+          <i class="fas fa-lock input-icon mr-2"></i>Password
+        </label>
+        <input type="password" name="password" value="{{ user.password }}"
+               class="form-input w-full rounded-xl py-3 px-5 text-gray-800 focus:ring-2 focus:ring-kashmir-red/30"
+               placeholder="Enter your password" required>
+      </div>
+
+      <button type="submit" class="btn-kashmir w-full py-3 rounded-xl font-semibold text-white">
+        <i class="fas fa-save mr-2"></i>Update Profile
+      </button>
+    </form>
+
+    <div class="mt-6 text-center">
+      <p class="text-sm text-gray-600">
+        <i class="fas fa-info-circle mr-1 text-kashmir-red"></i>
+        Your data is securely stored
+      </p>
+    </div>
+  </div>
+
+  <script>
+    // Add animation to form inputs on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      const inputs = document.querySelectorAll('.form-input');
+      inputs.forEach((input, index) => {
+        input.style.animation = `fadeIn 0.8s ease-out ${index * 0.2}s forwards`;
+        input.style.opacity = '0';
+      });
+    });
+  </script>
+</body>
+</html>

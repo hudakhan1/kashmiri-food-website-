@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="min-h-screen bg-kashmir-light py-8 px-4 sm:px-6 lg:px-8 overflow-x-hidden">
+  <div class="max-w-6xl mx-auto">
+    <!-- Header -->
+    <div class="text-center mb-12">
+      <h1 class="text-3xl md:text-4xl font-bold text-kashmir-red mb-4 animate-fade-in-down">
+        Contact Kashmiri Food
+      </h1>
+      <div class="w-24 h-1 bg-kashmir-saffron mx-auto mb-6"></div>
+    </div>
+
+    <!-- Support Section -->
+    <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8 mb-8 transform transition-all duration-300 hover:shadow-xl animate-fade-in-up">
+      <h2 class="text-2xl font-semibold text-kashmir-dark mb-4 flex items-center">
+        <i class="fas fa-question-circle text-kashmir-saffron mr-3"></i>
+        Need Help?
+      </h2>
+      <p class="text-kashmir-dark mb-6 text-lg">
+        Our support team is here to help you with any questions about our authentic Kashmiri cuisine.
+      </p>
+
+      <!-- Chat Button -->
+      <a href="{{ url_for('chat_room', uid=session['uid']) }}"
+         class="inline-flex items-center bg-kashmir-red text-white px-6 py-3 rounded-full font-medium shadow-md hover:bg-kashmir-saffron hover:scale-105 transition-all duration-300 animate-pulse text-center">
+        <i class="fa-solid fa-headset mr-3 text-xl"></i>
+        Chat with Kashmiri Food Support
+      </a>
+    </div>
+
+    <!-- Contact and Location Section -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+      <!-- Contact Card -->
+      <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8 transform transition-all duration-300 hover:shadow-xl animate-fade-in-left">
+        <h3 class="text-xl font-bold text-kashmir-dark mb-6 flex items-center">
+          <i class="fas fa-address-card text-kashmir-saffron mr-3"></i>
+          Contact Information
+        </h3>
+
+        <div class="space-y-4">
+          <div class="flex items-center">
+            <div class="bg-kashmir-saffron/20 p-3 rounded-full mr-4">
+              <i class="fas fa-phone text-kashmir-saffron text-lg"></i>
+            </div>
+            <div class="overflow-hidden">
+              <p class="font-medium text-kashmir-dark">Phone</p>
+              <p class="text-kashmir-red break-words">+92-300-1234567</p>
+            </div>
+          </div>
+
+          <div class="flex items-center">
+            <div class="bg-kashmir-saffron/20 p-3 rounded-full mr-4">
+              <i class="fas fa-envelope text-kashmir-saffron text-lg"></i>
+            </div>
+            <div class="overflow-hidden">
+              <p class="font-medium text-kashmir-dark">Email</p>
+              <p class="text-kashmir-red break-words">support@kashmirifood.com</p>
+            </div>
+          </div>
+
+          <div class="flex items-center">
+            <div class="bg-kashmir-saffron/20 p-3 rounded-full mr-4">
+              <i class="fas fa-clock text-kashmir-saffron text-lg"></i>
+            </div>
+            <div>
+              <p class="font-medium text-kashmir-dark">Hours</p>
+              <p class="text-kashmir-red">10:00 AM - 10:00 PM</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-8">
+          <h4 class="font-medium text-kashmir-dark mb-3">Follow Us</h4>
+          <div class="flex flex-wrap gap-3">
+            <a href="https://facebook.com/yourid" target="_blank" class="bg-kashmir-light text-kashmir-red p-3 rounded-full hover:bg-kashmir-saffron hover:text-white transition-all duration-300 transform hover:scale-110">
+              <i class="fab fa-facebook-f text-xl"></i>
+            </a>
+            <a href="https://instagram.com/yourid" target="_blank" class="bg-kashmir-light text-kashmir-red p-3 rounded-full hover:bg-kashmir-saffron hover:text-white transition-all duration-300 transform hover:scale-110">
+              <i class="fab fa-instagram text-xl"></i>
+            </a>
+            <a href="https://twitter.com/yourid" target="_blank" class="bg-kashmir-light text-kashmir-red p-3 rounded-full hover:bg-kashmir-saffron hover:text-white transition-all duration-300 transform hover:scale-110">
+              <i class="fab fa-twitter text-xl"></i>
+            </a>
+            <a href="https://youtube.com/yourid" target="_blank" class="bg-kashmir-light text-kashmir-red p-3 rounded-full hover:bg-kashmir-saffron hover:text-white transition-all duration-300 transform hover:scale-110">
+              <i class="fab fa-youtube text-xl"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Location Card -->
+      <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8 transform transition-all duration-300 hover:shadow-xl animate-fade-in-right">
+        <h3 class="text-xl font-bold text-kashmir-dark mb-6 flex items-center">
+          <i class="fas fa-map-marker-alt text-kashmir-saffron mr-3"></i>
+          Visit Our Restaurant
+        </h3>
+
+        <div class="rounded-xl overflow-hidden shadow-md h-64 sm:h-72 md:h-80 w-full">
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3322.6122283556324!2d73.13020148446024!3d33.615364404544124!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38dfeb9d58c6f42f%3A0x9c21c22f3dc584bd!2sMian%20Jee%20Murgh%20Pulao%20And%20Restaurant!5e0!3m2!1sen!2s!4v1756478461909!5m2!1sen!2s" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                  width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"
+                  referrerpolicy="no-referrer-when-downgrade" class="w-full h-full">
+        </div>
+
+        <div class="mt-6">
+          <div class="flex items-start">
+            <div class="bg-kashmir-saffron/20 p-3 rounded-full mr-4 mt-1">
+              <i class="fas fa-location-dot text-kashmir-saffron"></i>
+            </div>
+            <div>
+              <p class="font-medium text-kashmir-dark">Address</p>
+              <p class="text-kashmir-red">123 Food Street, Srinagar, Kashmir</p>
+              <p class="text-sm text-gray-600 mt-1">Near Dal Lake, opposite to Mughal Gardens</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}

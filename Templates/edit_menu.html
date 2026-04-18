@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Menu Item - Kashmiri Food</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <style>
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateX(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.02);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    .animate-fade-in {
+      animation: fadeIn 0.6s ease-out forwards;
+    }
+
+    .animate-slide-in {
+      animation: slideIn 0.5s ease-out forwards;
+    }
+
+    .animate-pulse-slow {
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    .form-input:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(157, 44, 43, 0.2);
+      border-color: #9D2C2B;
+    }
+  </style>
+</head>
+<body class="bg-kashmir-light min-h-screen flex flex-col items-center p-4 sm:p-6" style="background-color: #F8F4E9;">
+
+  <div class="w-full max-w-2xl bg-white shadow-xl rounded-xl p-4 sm:p-6 md:p-8 relative mt-6 sm:mt-8 md:mt-10 animate-fade-in">
+    <!-- 🔙 Back Button -->
+    <a href="{{ url_for('admin_dashboard') }}"
+       class="absolute -left-2 sm:-left-3 -top-3 sm:-top-4 bg-kashmir-saffron text-white p-2 sm:p-3 rounded-full shadow-lg hover:bg-kashmir-red transition-all duration-300 animate-slide-in"
+       style="background-color: #D96C2B;">
+      <i class="fas fa-arrow-left text-sm sm:text-base"></i>
+    </a>
+
+    <!-- Header with Icon -->
+    <div class="text-center mb-6 sm:mb-8">
+      <div class="inline-block p-3 sm:p-4 rounded-full bg-kashmir-saffron/10 mb-3 sm:mb-4 animate-pulse-slow" style="background-color: rgba(217, 108, 43, 0.1);">
+        <i class="fas fa-edit text-kashmir-saffron text-2xl sm:text-3xl" style="color: #D96C2B;"></i>
+      </div>
+      <h1 class="text-2xl sm:text-3xl font-bold text-kashmir-dark mb-2" style="color: #2C1810;">Edit Menu Item</h1>
+      <p class="text-kashmir-dark/70 text-sm sm:text-base" style="color: rgba(44, 24, 16, 0.7);">Update your delicious Kashmiri dishes</p>
+    </div>
+
+    <!-- Messages -->
+    {% if error %}
+      <div class="p-3 sm:p-4 rounded-lg bg-red-100 text-red-800 mb-4 sm:mb-6 border-l-4 border-red-500 flex items-center animate-fade-in text-sm sm:text-base">
+        <i class="fas fa-exclamation-circle mr-2 sm:mr-3 text-red-600"></i>
+        <span>{{ error }}</span>
+      </div>
+    {% endif %}
+    {% if success %}
+      <div class="p-3 sm:p-4 rounded-lg bg-green-100 text-green-800 mb-4 sm:mb-6 border-l-4 border-green-500 flex items-center animate-fade-in text-sm sm:text-base">
+        <i class="fas fa-check-circle mr-2 sm:mr-3 text-green-600"></i>
+        <span>{{ success }}</span>
+      </div>
+    {% endif %}
+
+    <!-- Form -->
+    <form method="POST" enctype="multipart/form-data" class="space-y-4 sm:space-y-6">
+      <!-- Current Item Section -->
+      <div class="bg-kashmir-saffron/5 p-4 sm:p-5 rounded-xl border border-kashmir-saffron/20 animate-fade-in" style="background-color: rgba(217, 108, 43, 0.05); border-color: rgba(217, 108, 43, 0.2);">
+        <h2 class="font-semibold text-kashmir-saffron mb-3 sm:mb-4 flex items-center text-sm sm:text-base" style="color: #D96C2B;">
+          <i class="fas fa-search mr-2"></i> Find Item (Current Values)
+        </h2>
+
+        <div class="space-y-3 sm:space-y-4">
+          <div>
+            <label class="block mb-1 sm:mb-2 text-kashmir-dark font-medium text-sm sm:text-base" style="color: #2C1810;">
+              <i class="fas fa-folder mr-2 text-kashmir-saffron" style="color: #D96C2B;"></i>Category
+            </label>
+            <input type="text" name="category" placeholder="Current Category"
+                   class="form-input border border-gray-200 p-2 sm:p-3 w-full rounded-lg focus:ring-2 focus:ring-kashmir-saffron/30 text-sm sm:text-base" required>
+          </div>
+
+          <div>
+            <label class="block mb-1 sm:mb-2 text-kashmir-dark font-medium text-sm sm:text-base" style="color: #2C1810;">
+              <i class="fas fa-utensils mr-2 text-kashmir-saffron" style="color: #D96C2B;"></i>Title
+            </label>
+            <input type="text" name="title" placeholder="Current Title"
+                   class="form-input border border-gray-200 p-2 sm:p-3 w-full rounded-lg focus:ring-2 focus:ring-kashmir-saffron/30 text-sm sm:text-base" required>
+          </div>
+        </div>
+      </div>
+
+      <!-- New Values Section -->
+      <div class="bg-kashmir-green/5 p-4 sm:p-5 rounded-xl border border-kashmir-green/20 animate-fade-in" style="background-color: rgba(78, 125, 54, 0.05); border-color: rgba(78, 125, 54, 0.2);">
+        <h2 class="font-semibold text-kashmir-green mb-3 sm:mb-4 flex items-center text-sm sm:text-base" style="color: #4E7D36;">
+          <i class="fas fa-sync-alt mr-2"></i> New Values (Fill only what you want to change)
+        </h2>
+
+        <div class="space-y-3 sm:space-y-4">
+          <div>
+            <label class="block mb-1 sm:mb-2 text-kashmir-dark font-medium text-sm sm:text-base" style="color: #2C1810;">
+              <i class="fas fa-utensils mr-2 text-kashmir-green" style="color: #4E7D36;"></i>New Title
+            </label>
+            <input type="text" name="new_title" placeholder="New Title"
+                   class="form-input border border-gray-200 p-2 sm:p-3 w-full rounded-lg focus:ring-2 focus:ring-kashmir-green/30 text-sm sm:text-base">
+          </div>
+
+          <div>
+            <label class="block mb-1 sm:mb-2 text-kashmir-dark font-medium text-sm sm:text-base" style="color: #2C1810;">
+              <i class="fas fa-folder mr-2 text-kashmir-green" style="color: #4E7D36;"></i>New Category
+            </label>
+            <input type="text" name="new_category" placeholder="New Category"
+                   class="form-input border border-gray-200 p-2 sm:p-3 w-full rounded-lg focus:ring-2 focus:ring-kashmir-green/30 text-sm sm:text-base">
+          </div>
+
+          <div>
+            <label class="block mb-1 sm:mb-2 text-kashmir-dark font-medium text-sm sm:text-base" style="color: #2C1810;">
+              <i class="fas fa-tag mr-2 text-kashmir-green" style="color: #4E7D36;"></i>New Price
+            </label>
+            <input type="text" name="price" placeholder="New Price"
+                   class="form-input border border-gray-200 p-2 sm:p-3 w-full rounded-lg focus:ring-2 focus:ring-kashmir-green/30 text-sm sm:text-base">
+          </div>
+
+          <div>
+            <label class="block mb-1 sm:mb-2 text-kashmir-dark font-medium text-sm sm:text-base" style="color: #2C1810;">
+              <i class="fas fa-image mr-2 text-kashmir-green" style="color: #4E7D36;"></i>New Image
+            </label>
+            <div class="flex items-center justify-center w-full">
+              <label class="flex flex-col items-center justify-center w-full h-28 sm:h-32 border-2 border-dashed border-kashmir-green/30 rounded-lg cursor-pointer hover:bg-kashmir-green/5 transition-all duration-300" style="border-color: rgba(78, 125, 54, 0.3);">
+                <div class="flex flex-col items-center justify-center pt-4 pb-5 sm:pt-5 sm:pb-6 px-2 text-center">
+                  <i class="fas fa-cloud-upload-alt text-kashmir-green/50 mb-1 sm:mb-2 text-xl sm:text-2xl" style="color: rgba(78, 125, 54, 0.5);"></i>
+                  <p class="mb-1 sm:mb-2 text-xs sm:text-sm text-kashmir-dark/70" style="color: rgba(44, 24, 16, 0.7);">Click to upload or drag and drop</p>
+                  <p class="text-xs text-kashmir-dark/50" style="color: rgba(44, 24, 16, 0.5);">SVG, PNG, JPG or GIF (MAX. 5MB)</p>
+                </div>
+                <input type="file" name="image" accept="image/*" class="hidden">
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <button type="submit"
+              class="w-full bg-kashmir-saffron text-white py-2 sm:py-3 rounded-lg font-semibold hover:bg-kashmir-red transition-all duration-300 transform hover:scale-105 shadow-md animate-pulse-slow text-sm sm:text-base"
+              style="background-color: #D96C2B;">
+        <i class="fas fa-save mr-2"></i> Update Menu Item
+      </button>
+    </form>
+  </div>
+
+  <script>
+    // Add animation to elements when the page loads
+    document.addEventListener('DOMContentLoaded', function() {
+      const formSections = document.querySelectorAll('form > div');
+      formSections.forEach((section, index) => {
+        section.style.animationDelay = `${index * 0.2}s`;
+      });
+
+      // File input styling
+      const fileInput = document.querySelector('input[type="file"]');
+      if (fileInput) {
+        fileInput.addEventListener('change', function(e) {
+          const fileName = e.target.files[0]?.name;
+          if (fileName) {
+            const label = this.previousElementSibling;
+            const textElement = label.querySelector('p:first-child');
+            const subTextElement = label.querySelector('p:last-child');
+
+            if (textElement) {
+              textElement.textContent = fileName.length > 20 ? fileName.substring(0, 17) + '...' : fileName;
+            }
+            if (subTextElement) {
+              subTextElement.textContent = 'File selected';
+            }
+          }
+        });
+      }
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Admin Info - Kashmiri Food</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        :root {
+            --kashmir-red: #9D2C2B;
+            --kashmir-saffron: #D96C2B;
+            --kashmir-cream: #F8F4E9;
+            --kashmir-dark: #2C1810;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, var(--kashmir-cream) 0%, #FFFFFF 100%);
+            min-height: 100vh;
+        }
+
+        /* Smooth animations */
+        .fade-in {
+            animation: fadeIn 0.6s ease-in-out;
+            opacity: 0;
+            animation-fill-mode: forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Hover animations */
+        .hover-animate {
+            transition: all 0.3s ease;
+        }
+
+        .hover-animate:hover {
+            transform: translateX(-3px);
+        }
+
+        /* Button animations */
+        .btn-primary {
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, var(--kashmir-red), var(--kashmir-saffron));
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(157, 44, 43, 0.3);
+        }
+
+        .btn-secondary {
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, #2C1810, #4A5568);
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(44, 24, 16, 0.3);
+        }
+
+        /* Input focus effects */
+        .input-focus:focus {
+            box-shadow: 0 0 0 3px rgba(157, 44, 43, 0.2);
+            border-color: var(--kashmir-red);
+        }
+
+        /* Card hover effect */
+        .card-hover {
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(157, 44, 43, 0.1);
+        }
+
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .admin-icon {
+            background: linear-gradient(135deg, var(--kashmir-red), var(--kashmir-saffron));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .page-title {
+            font-family: 'Playfair Display', serif;
+            background: linear-gradient(135deg, var(--kashmir-red), var(--kashmir-saffron));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4">
+
+    <div class="w-full max-w-md bg-white rounded-2xl p-8 fade-in card-hover relative">
+        <!-- Back Arrow -->
+        <a href="{{ url_for('admin_dashboard') }}" class="absolute top-6 left-6 text-kashmir-red hover:text-kashmir-saffron hover-animate">
+            <i class="fa-solid fa-arrow-left text-xl"></i>
+        </a>
+
+        <div class="text-center mb-6">
+            <div class="inline-block p-4 rounded-full bg-kashmir-cream mb-4">
+                <i class="fa-solid fa-user-shield text-3xl admin-icon"></i>
+            </div>
+            <h2 class="text-3xl font-bold mb-2 page-title">Edit Admin Info</h2>
+            <p class="text-kashmir-dark opacity-80">Update your account details</p>
+        </div>
+
+        <form method="POST" action="{{ url_for('edit_admin') }}" class="mt-6">
+            <div class="mb-6">
+                <label for="email" class="block text-kashmir-dark mb-3 font-medium">
+                    <i class="fa-solid fa-envelope mr-2 text-kashmir-red"></i>Email Address
+                </label>
+                <input type="email" id="email" name="email" value="{{ admin_email }}" required
+                       class="w-full p-4 border border-gray-200 rounded-xl input-focus focus:outline-none transition bg-kashmir-cream">
+            </div>
+
+            <div class="mb-7">
+                <label for="password" class="block text-kashmir-dark mb-3 font-medium">
+                    <i class="fa-solid fa-lock mr-2 text-kashmir-red"></i>Password
+                </label>
+                <input type="text" id="password" name="password" value="{{ admin_password }}" required
+                       class="w-full p-4 border border-gray-200 rounded-xl input-focus focus:outline-none transition bg-kashmir-cream">
+            </div>
+
+            <div class="flex justify-between mt-8 space-x-4">
+                <button type="reset" class="btn-secondary px-6 py-3 text-white rounded-xl font-medium flex items-center">
+                    <i class="fa-solid fa-rotate-left mr-2"></i>Reset
+                </button>
+                <button type="submit" class="btn-primary px-6 py-3 text-white rounded-xl font-medium flex items-center">
+                    <i class="fa-solid fa-floppy-disk mr-2"></i>Save Changes
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add animation to input fields when they gain focus
+            const inputs = document.querySelectorAll('input');
+            inputs.forEach(input => {
+                input.addEventListener('focus', () => {
+                    input.parentElement.classList.add('transform', 'scale-105');
+                    input.parentElement.style.transition = 'transform 0.3s ease';
+                });
+
+                input.addEventListener('blur', () => {
+                    input.parentElement.classList.remove('transform', 'scale-105');
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>

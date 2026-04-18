@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Kashmiri Food - Login / Signup</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg1: #F8F4E9;
+      --bg2: #F0E6D6;
+      --accent1: #9D2C2B;
+      --accent2: #D96C2B;
+      --accent3: #4E7D36;
+    }
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, var(--bg1) 0%, var(--bg2) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Poppins', sans-serif;
+      padding: 20px;
+    }
+    .glow-wrap{
+      position: relative;
+      padding: 12px;
+      border-radius: 20px;
+      z-index: 1;
+      filter: drop-shadow(0 15px 35px rgba(44, 24, 16, 0.25));
+      transition: all 0.5s ease;
+    }
+    .glow-wrap:hover {
+      transform: translateY(-8px) scale(1.02);
+    }
+    .glow-border {
+      position: absolute;
+      inset: 0;
+      border-radius: 24px;
+      padding: 2px;
+      background: conic-gradient(from 0deg, rgba(157,44,43,0.8), rgba(217,108,43,0.8), rgba(78,125,54,0.8), rgba(157,44,43,0.8));
+      -webkit-mask: linear-gradient(#000, #000) content-box, linear-gradient(#000, #000);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      animation: rotate 10s linear infinite;
+      z-index: -1;
+    }
+    .panel {
+      width: 440px;
+      max-width: calc(100vw - 48px);
+      border-radius: 20px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.98) 100%);
+      backdrop-filter: blur(12px) saturate(120%);
+      box-shadow: inset 0 2px 0 rgba(255,255,255,0.2),
+                  inset 0 -12px 40px rgba(44, 24, 16, 0.15),
+                  0 10px 40px rgba(44, 24, 16, 0.25);
+      padding: 35px;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(157, 44, 43, 0.15);
+    }
+    .panel::before {
+      content: "";
+      position: absolute;
+      left: -25%;
+      top: -35%;
+      width: 180%;
+      height: 140%;
+      background: radial-gradient(circle at 25% 15%, rgba(157,44,43,0.1), transparent 15%),
+                  radial-gradient(circle at 75% 85%, rgba(217,108,43,0.08), transparent 12%);
+      transform: rotate(-15deg);
+      pointer-events: none;
+      z-index: 0;
+    }
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    @keyframes float {
+      0% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-10px) rotate(2deg); }
+      100% { transform: translateY(0px) rotate(0deg); }
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); box-shadow: 0 8px 25px rgba(157,44,43,0.25); }
+      50% { transform: scale(1.05); box-shadow: 0 12px 35px rgba(157,44,43,0.4); }
+      100% { transform: scale(1); box-shadow: 0 8px 25px rgba(157,44,43,0.25); }
+    }
+    @keyframes spiceFall {
+      0% { transform: translateY(-100px) rotate(0deg); opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @media (max-width: 480px){
+      .panel { padding: 25px; border-radius: 16px; }
+    }
+    .form-input:focus {
+      outline: none;
+      box-shadow: 0 8px 25px rgba(157,44,43,0.15), 0 0 0 4px rgba(157,44,43,0.1);
+      border-color: rgba(157,44,43,0.7);
+    }
+    .back-button {
+      position: absolute;
+      top: 25px;
+      left: 25px;
+      background: rgba(157,44,43,0.1);
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.4s ease;
+      color: #9D2C2B;
+      z-index: 10;
+      box-shadow: 0 4px 15px rgba(44, 24, 16, 0.1);
+    }
+    .back-button:hover {
+      background: rgba(157,44,43,0.2);
+      transform: translateX(-5px);
+      box-shadow: 0 6px 20px rgba(44, 24, 16, 0.15);
+    }
+    .kashmir-title {
+      font-family: 'Playfair Display', serif;
+      background: linear-gradient(135deg, #9D2C2B, #D96C2B);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      position: relative;
+      display: inline-block;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.05);
+    }
+    .kashmir-title::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, #9D2C2B, #D96C2B);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.6s ease;
+    }
+    .kashmir-title:hover::after {
+      transform: scaleX(1);
+    }
+    .floating-element {
+      animation: float 5s ease-in-out infinite;
+    }
+    .pulse-element {
+      animation: pulse 3s ease-in-out infinite;
+    }
+    .btn-kashmir {
+      background: linear-gradient(135deg, #9D2C2B, #D96C2B);
+      transition: all 0.4s ease;
+      box-shadow: 0 8px 25px rgba(157,44,43,0.25);
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-kashmir:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 35px rgba(157,44,43,0.4);
+    }
+    .btn-kashmir::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: 0.5s;
+    }
+    .btn-kashmir:hover::before {
+      left: 100%;
+    }
+    .tab-button {
+      transition: all 0.4s ease;
+      position: relative;
+      overflow: hidden;
+      font-weight: 500;
+    }
+    .tab-button::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, #9D2C2B, #D96C2B);
+      transform: scaleX(0);
+      transition: transform 0.4s ease;
+    }
+    .tab-button.active {
+      background: rgba(157,44,43,0.1);
+      color: #9D2C2B;
+    }
+    .tab-button.active::after {
+      transform: scaleX(1);
+    }
+    .spice {
+      position: absolute;
+      font-size: 24px;
+      opacity: 0;
+      z-index: -1;
+    }
+    .custom-select {
+      position: relative;
+    }
+    .custom-select select {
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+    }
+    .custom-select::after {
+      content: "▼";
+      font-size: 12px;
+      color: #9D2C2B;
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
+    }
+    .animate-fade-in {
+      opacity: 0;
+      animation: fadeInUp 1s forwards;
+    }
+    .food-icon {
+      background: linear-gradient(135deg, #9D2C2B, #D96C2B);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+    }
+  </style>
+</head>
+<body>
+  <!-- Floating spices animation -->
+  <div class="spice" style="top: 5%; left: 10%; animation: spiceFall 15s linear infinite; animation-delay: 0s;">🌶️</div>
+  <div class="spice" style="top: 15%; left: 85%; animation: spiceFall 18s linear infinite; animation-delay: 2s;">🍚</div>
+  <div class="spice" style="top: 8%; left: 70%; animation: spiceFall 20s linear infinite; animation-delay: 4s;">🍃</div>
+  <div class="spice" style="top: 12%; left: 25%; animation: spiceFall 16s linear infinite; animation-delay: 6s;">🧅</div>
+  <div class="spice" style="top: 5%; left: 50%; animation: spiceFall 22s linear infinite; animation-delay: 8s;">🍅</div>
+
+  <div class="glow-wrap">
+    <div class="glow-border" aria-hidden="true"></div>
+    <main class="panel text-gray-800">
+      <!-- Back Button -->
+      <a href="/" class="back-button">
+        <i class="fas fa-arrow-left"></i>
+      </a>
+
+      <header class="mb-8 text-center mt-6">
+        <h1 id="form-title" class="text-4xl font-bold kashmir-title animate-fade-in" style="animation-delay: 0.2s;">Kashmiri Food Delights</h1>
+      </header>
+
+      <div class="flex gap-3 mb-8 bg-gray-100 p-2 rounded-xl">
+        <button id="btn-login" class="tab-button active flex-1 py-3 px-5 rounded-lg transition animate-fade-in" style="animation-delay: 0.6s;">
+          <i class="fas fa-sign-in-alt mr-2"></i>Login
+        </button>
+        <button id="btn-signup" class="tab-button flex-1 py-3 px-5 rounded-lg transition animate-fade-in" style="animation-delay: 0.7s;">
+          <i class="fas fa-user-plus mr-2"></i>Signup
+        </button>
+      </div>
+
+      <section id="forms">
+        <!-- LOGIN -->
+        <form id="login-form" action="{{ url_for('user_login') }}" method="POST" class="space-y-6">
+          <div class="animate-fade-in" style="animation-delay: 0.8s;">
+            <label class="block text-sm mb-2 font-medium text-gray-700">
+              <i class="fas fa-user-tie mr-2 food-icon"></i>Select Role
+            </label>
+            <div class="custom-select">
+              <select name="role" required class="form-input w-full rounded-xl bg-gray-50 border border-gray-200 py-3 px-5 text-gray-800 focus:ring-2 focus:ring-kashmir-red/30 pr-10">
+                <option value="user">user</option>
+                <option value="admin">Admin</option>
+              </select>
+            </div>
+          </div>
+          <div class="animate-fade-in" style="animation-delay: 0.9s;">
+            <label class="block text-sm mb-2 font-medium text-gray-700">
+              <i class="fas fa-envelope mr-2 food-icon"></i>Email Address
+            </label>
+            <input name="email" type="email" required class="form-input w-full rounded-xl bg-gray-50 border border-gray-200 placeholder:text-gray-400 py-3 px-5 text-gray-800 focus:ring-2 focus:ring-kashmir-red/30" placeholder="your@email.com" />
+          </div>
+          <div class="animate-fade-in" style="animation-delay: 1.0s;">
+            <label class="block text-sm mb-2 font-medium text-gray-700">
+              <i class="fas fa-lock mr-2 food-icon"></i>Password
+            </label>
+            <input name="password" type="password" required class="form-input w-full rounded-xl bg-gray-50 border border-gray-200 placeholder:text-gray-400 py-3 px-5 text-gray-800 focus:ring-2 focus:ring-kashmir-red/30" placeholder="Enter your secret recipe" />
+          </div>
+          <div class="animate-fade-in" style="animation-delay: 1.1s;">
+            <button type="submit" class="btn-kashmir w-full py-3 rounded-xl font-semibold text-white pulse-element">
+              <i class="fas fa-utensils mr-2"></i>Savor the Flavors
+            </button>
+          </div>
+        </form>
+
+        <!-- SIGNUP -->
+        <form id="signup-form" action="{{ url_for('user_signup') }}" method="POST" class="space-y-6 hidden">
+          <div class="animate-fade-in" style="animation-delay: 0.8s;">
+            <label class="block text-sm mb-2 font-medium text-gray-700">
+              <i class="fas fa-user mr-2 food-icon"></i>Full Name
+            </label>
+            <input name="name" type="text" required class="form-input w-full rounded-xl bg-gray-50 border border-gray-200 placeholder:text-gray-400 py-3 px-5 text-gray-800 focus:ring-2 focus:ring-kashmir-red/30" placeholder="Enter your name" />
+          </div>
+          <div class="animate-fade-in" style="animation-delay: 0.9s;">
+            <label class="block text-sm mb-2 font-medium text-gray-700">
+              <i class="fas fa-envelope mr-2 food-icon"></i>Email Address
+            </label>
+            <input name="email" type="email" required class="form-input w-full rounded-xl bg-gray-50 border border-gray-200 placeholder:text-gray-400 py-3 px-5 text-gray-800 focus:ring-2 focus:ring-kashmir-red/30" placeholder="your@email.com" />
+          </div>
+          <div class="animate-fade-in" style="animation-delay: 1.0s;">
+            <label class="block text-sm mb-2 font-medium text-gray-700">
+              <i class="fas fa-lock mr-2 food-icon"></i>Password
+            </label>
+            <input name="password" type="password" required minlength="6" class="form-input w-full rounded-xl bg-gray-50 border border-gray-200 placeholder:text-gray-400 py-3 px-5 text-gray-800 focus:ring-2 focus:ring-kashmir-red/30" placeholder="Create your secret recipe" />
+          </div>
+          <div class="animate-fade-in" style="animation-delay: 1.1s;">
+            <button type="submit" class="btn-kashmir w-full py-3 rounded-xl font-semibold text-white pulse-element">
+              <i class="fas fa-chef-hat mr-2"></i>Join Our Kitchen
+            </button>
+          </div>
+        </form>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const btnLogin = document.getElementById('btn-login');
+    const btnSignup = document.getElementById('btn-signup');
+    const loginForm = document.getElementById('login-form');
+    const signupForm = document.getElementById('signup-form');
+    const formTitle = document.getElementById('form-title');
+    const formSub = document.getElementById('form-sub');
+    const tabButtons = document.querySelectorAll('.tab-button');
+
+    function showLogin() {
+      loginForm.classList.remove('hidden');
+      signupForm.classList.add('hidden');
+      formTitle.innerHTML = 'Kashmiri Food Delights';
+      formSub.textContent = 'Welcome back to authentic Kashmiri cuisine';
+
+      // Update active tab
+      tabButtons.forEach(btn => btn.classList.remove('active'));
+      btnLogin.classList.add('active');
+    }
+
+    function showSignup() {
+      signupForm.classList.remove('hidden');
+      loginForm.classList.add('hidden');
+      formTitle.innerHTML = 'Join Our Culinary Journey';
+      formSub.textContent = 'Discover the authentic taste of Kashmir';
+
+      // Update active tab
+      tabButtons.forEach(btn => btn.classList.remove('active'));
+      btnSignup.classList.add('active');
+    }
+
+    btnLogin.addEventListener('click', () => showLogin());
+    btnSignup.addEventListener('click', () => showSignup());
+
+    // Initialize with login form
+    showLogin();
+
+    // Create more falling spices
+    function createSpices() {
+      const spices = ['🌶️', '🍚', '🍃', '🧅', '🍅', '🥘', '🧄', '🔥'];
+      const container = document.body;
+
+      for (let i = 0; i < 8; i++) {
+        const spice = document.createElement('div');
+        spice.className = 'spice';
+        spice.innerHTML = spices[Math.floor(Math.random() * spices.length)];
+        spice.style.left = Math.random() * 100 + '%';
+        spice.style.animationDelay = Math.random() * 10 + 's';
+        spice.style.animationDuration = (15 + Math.random() * 10) + 's';
+        container.appendChild(spice);
+      }
+    }
+
+    createSpices();
+  </script>
+</body>
+</html>

@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Kashmiri Food - Chat Support</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+  <style>
+    /* Custom animations */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.05);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateX(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes slideInRight {
+      from {
+        opacity: 0;
+        transform: translateX(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .animate-fade-in {
+      animation: fadeIn 0.5s ease-out forwards;
+    }
+
+    .animate-pulse {
+      animation: pulse 2s infinite;
+    }
+
+    .animate-slide-in {
+      animation: slideIn 0.5s ease-out forwards;
+    }
+
+    .animate-slide-in-right {
+      animation: slideInRight 0.5s ease-out forwards;
+    }
+
+    /* Kashmiri color variables */
+    .bg-kashmir-light {
+      background-color: #F8F4E9;
+    }
+
+    .text-kashmir-dark {
+      color: #2C1810;
+    }
+
+    .text-kashmir-red {
+      color: #9D2C2B;
+    }
+
+    .text-kashmir-saffron {
+      color: #D96C2B;
+    }
+
+    .bg-kashmir-red {
+      background-color: #9D2C2B;
+    }
+
+    .bg-kashmir-saffron {
+      background-color: #D96C2B;
+    }
+
+    .bg-kashmir-admin {
+      background-color: #4E7D36;
+    }
+
+    .bg-kashmir-user {
+      background-color: #9D2C2B;
+    }
+
+    .border-kashmir {
+      border-color: #D96C2B;
+    }
+
+    /* Scrollbar styling */
+    .messages-container::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .messages-container::-webkit-scrollbar-track {
+      background: #F0E6D6;
+      border-radius: 10px;
+    }
+
+    .messages-container::-webkit-scrollbar-thumb {
+      background: #D96C2B;
+      border-radius: 10px;
+    }
+
+    .messages-container::-webkit-scrollbar-thumb:hover {
+      background: #9D2C2B;
+    }
+  </style>
+</head>
+<body class="bg-kashmir-light flex flex-col h-screen">
+
+  <!-- Header -->
+  <div class="bg-kashmir-red text-white p-4 flex items-center justify-between shadow-md">
+    <div class="flex items-center">
+      <a href="{{ url_for('contact') }}" class="mr-3 text-white hover:text-kashmir-saffron transition-colors">
+        <i class="fas fa-arrow-left"></i>
+      </a>
+      <div class="w-10 h-10 rounded-full bg-kashmir-saffron flex items-center justify-center mr-3">
+        <i class="fas fa-headset text-white"></i>
+      </div>
+      <div>
+        <h1 class="font-bold text-lg">Kashmiri Food Support</h1>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Messages Area -->
+  <div class="flex-1 overflow-y-auto p-4 space-y-4 messages-container">
+    {% for mid, msg in messages.items() %}
+      {% if msg.uid == "admin" %}
+        <!-- Admin Messages -->
+        {% if is_admin %}
+          <!-- Admin apne msgs right side -->
+          <div class="flex justify-end mb-4 animate-slide-in-right">
+            <div class="flex flex-col items-end max-w-xs md:max-w-md">
+              <div class="bg-kashmir-admin text-white px-4 py-3 rounded-l-2xl rounded-br-2xl shadow-md">
+                <p class="text-sm">{{ msg.message }}</p>
+              </div>
+
+            </div>
+            <div class="w-8 h-8 rounded-full bg-kashmir-admin text-white flex items-center justify-center ml-2 flex-shrink-0">
+              <i class="fas fa-user-cog text-xs"></i>
+            </div>
+          </div>
+        {% else %}
+          <!-- User view -> admin msgs left side -->
+          <div class="flex justify-start mb-4 animate-slide-in">
+            <div class="w-8 h-8 rounded-full bg-kashmir-admin text-white flex items-center justify-center mr-2 flex-shrink-0">
+              <i class="fas fa-user-tie text-xs"></i>
+            </div>
+            <div class="flex flex-col items-start max-w-xs md:max-w-md">
+              <div class="bg-gray-200 text-kashmir-dark px-4 py-3 rounded-r-2xl rounded-bl-2xl shadow-md">
+                <p class="text-sm">{{ msg.message }}</p>
+              </div>
+
+            </div>
+          </div>
+        {% endif %}
+      {% else %}
+        <!-- User Messages -->
+        {% if is_admin %}
+          <!-- Admin view -> user msgs left -->
+          <div class="flex justify-start mb-4 animate-slide-in">
+            <div class="w-8 h-8 rounded-full bg-kashmir-user text-white flex items-center justify-center mr-2 flex-shrink-0">
+              <i class="fas fa-user text-xs"></i>
+            </div>
+            <div class="flex flex-col items-start max-w-xs md:max-w-md">
+              <div class="bg-gray-200 text-kashmir-dark px-4 py-3 rounded-r-2xl rounded-bl-2xl shadow-md">
+                <p class="text-sm">{{ msg.message }}</p>
+              </div>
+              <div class="flex items-center mt-1">
+
+                {% if msg.status %}
+                  <span class="text-xs text-kashmir-saffron">
+                    <i class="fas fa-check-circle"></i> {{ msg.status }}
+                  </span>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        {% else %}
+          <!-- User view -> apne msgs right -->
+          <div class="flex justify-end mb-4 animate-slide-in-right">
+            <div class="flex flex-col items-end max-w-xs md:max-w-md">
+              <div class="bg-kashmir-user text-white px-4 py-3 rounded-l-2xl rounded-br-2xl shadow-md">
+                <p class="text-sm">{{ msg.message }}</p>
+              </div>
+              <div class="flex items-center mt-1">
+                {% if msg.status %}
+                  <span class="text-xs text-kashmir-saffron mr-2">
+                    <i class="fas fa-check-circle"></i> {{ msg.status }}
+                  </span>
+                {% endif %}
+
+              </div>
+            </div>
+            <div class="w-8 h-8 rounded-full bg-kashmir-user text-white flex items-center justify-center ml-2 flex-shrink-0">
+              <i class="fas fa-user text-xs"></i>
+            </div>
+          </div>
+        {% endif %}
+      {% endif %}
+    {% else %}
+      <!-- Empty state -->
+      <div class="flex flex-col items-center justify-center h-full text-center text-gray-500 animate-fade-in">
+        <div class="w-16 h-16 rounded-full bg-kashmir-saffron/20 flex items-center justify-center mb-4">
+          <i class="fas fa-comments text-kashmir-saffron text-2xl"></i>
+        </div>
+        <h3 class="font-medium text-lg mb-1">Start a conversation</h3>
+        <p class="text-sm">Send a message to our support team. We're here to help!</p>
+      </div>
+    {% endfor %}
+  </div>
+
+  <!-- Input Form -->
+  <form action="" method="POST" class="p-4 bg-white border-t border-gray-200 flex items-center">
+
+    <input type="text" name="message" placeholder="Type your message..."
+           class="flex-1 border border-gray-300 rounded-full px-4 py-3 focus:outline-none focus:ring-2 focus:ring-kashmir-saffron focus:border-transparent transition-all">
+    <button type="submit" class="w-10 h-10 rounded-full bg-kashmir-saffron text-white flex items-center justify-center ml-2 hover:bg-kashmir-red transition-colors animate-pulse">
+      <i class="fas fa-paper-plane"></i>
+    </button>
+  </form>
+
+  <script>
+    // Auto-scroll to bottom of messages
+    function scrollToBottom() {
+      const messagesContainer = document.querySelector('.messages-container');
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+
+    // Scroll to bottom when page loads
+    document.addEventListener('DOMContentLoaded', scrollToBottom);
+
+    // Also scroll to bottom after sending a message (you might want to call this after form submission)
+    document.querySelector('form').addEventListener('submit', function() {
+      setTimeout(scrollToBottom, 100);
+    });
+  </script>
+
+</body>
+</html>

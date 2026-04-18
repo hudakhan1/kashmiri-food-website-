@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Order Summary</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-6">
+  <div class="bg-white shadow-xl rounded-lg p-6 w-full max-w-3xl">
+    <!-- Thank You -->
+    <div class="text-center border-b pb-4 mb-6">
+      <h1 class="text-3xl font-bold text-green-600">Thank you for your order!</h1>
+      <p class="text-gray-600">A confirmation email has been sent to <span class="font-semibold">{{ order.email }}</span></p>
+      <p class="mt-2">Order Number: <span class="text-blue-600 font-semibold">#{{ order.order_number }}</span></p>
+    </div>
+
+    <!-- Order Items -->
+    <div class="mb-6">
+      <h2 class="text-xl font-semibold mb-4">Your Items</h2>
+      <div class="space-y-4">
+        {% for id, item in order.cart.items() %}
+          <div class="flex items-center justify-between border-b pb-3">
+            <!-- Product Image -->
+            <div class="flex items-center space-x-4">
+              <img src="{{ item.image }}" alt="{{ item.title }}" class="w-16 h-16 object-cover rounded">
+              <div>
+                <h3 class="font-semibold">{{ item.title }}</h3>
+                <p class="text-gray-500 text-sm">Quantity: {{ item.quantity }}</p>
+              </div>
+            </div>
+            <!-- Price -->
+            <div class="text-right">
+              <p class="font-semibold">Rs. {{ item.price * item.quantity }}</p>
+              <p class="text-gray-500 text-sm">Rs. {{ item.price }} each</p>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Order Summary -->
+    <div class="mb-6">
+      <h2 class="text-xl font-semibold mb-4">Order Summary</h2>
+      <div class="space-y-2">
+        <div class="flex justify-between">
+          <span>Total Items:</span>
+          <span>{{ order.total_items }}</span>
+        </div>
+        <div class="flex justify-between">
+          <span>Subtotal:</span>
+          <span>Rs. {{ order.total }}</span>
+        </div>
+        <div class="flex justify-between">
+          <span>Delivery Charges:</span>
+          <span>Rs. {{ order.delivery_charges }}</span>
+        </div>
+        <hr>
+        <div class="flex justify-between font-bold text-lg">
+          <span>Grand Total:</span>
+          <span>Rs. {{ order.subtotal }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Delivery Details -->
+    <div class="mb-6">
+      <h2 class="text-xl font-semibold mb-4">Delivery Information</h2>
+      <p><span class="font-semibold">Name:</span> {{ order.customer_name }}</p>
+      <p><span class="font-semibold">Phone:</span> {{ order.phone }}</p>
+      <p><span class="font-semibold">Address:</span> {{ order.address }}</p>
+      <p><span class="font-semibold">City:</span> {{ order.city }}</p>
+    </div>
+
+    <!-- Payment Info -->
+    <div class="mb-6">
+      <h2 class="text-xl font-semibold mb-4">Payment Method</h2>
+      <p>{{ order.payment_method }}</p>
+    </div>
+
+    <!-- Back Button -->
+    <div class="text-center">
+      <a href="/" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition">Back to Home</a>
+    </div>
+  </div>
+</body>
+</html>
